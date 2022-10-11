@@ -11,4 +11,23 @@ public class Main {
         input.nextLine();
 
     }
+
+    public static void EndGame(boolean myWin)
+    {
+        if (myWin)
+        {
+            System.out.println("Congratulations you did it :)");
+
+        }
+        else
+        {
+            System.out.println("Try agan :(");
+        }
+    }
+
+    public static void NewGame()
+    {
+        Scanner input = new Scanner(System.in);
+
+    }
 }

@@ -8,13 +8,25 @@ public class GridSquare {
         this.xPosition = myX;
         this.yPosition = myY;
         this.contents = myContents;
+        this.flaged = false;
         UpdateImage();
     }
 
-    public char CheckSquar()
+    public char CheckSquare()
     {
         UpdateImage();
         return this.image;
+    }
+
+    public void FlagSquare(){
+        flaged = !flaged;
+        UpdateImage();
+    }
+
+    public void ReveleSquare()
+    {
+        reveled = true;
+        UpdateImage();
     }
 
     private void UpdateImage()
@@ -32,7 +44,7 @@ public class GridSquare {
 
             } else
             {
-
+                Main.EndGame(false);
             }
         }else
         {

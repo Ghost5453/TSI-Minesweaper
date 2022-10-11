@@ -14,18 +14,6 @@ public class Grid {
         GenerateGrid();
     }
 
-    private void GenerateGrid()
-    {
-        grid = new GridSquare[xSize][ySize];
-        for(int y = 0; y < xSize; y++)
-        {
-            for (int x = 0; x < ySize; x++)
-            {
-                grid[x][y] = new GridSquare(x, y, 0);
-            }
-        }
-    }
-
     public String RenderGrid()
     {
         String gridStr;
@@ -40,7 +28,7 @@ public class Grid {
         {
             for (int x = 0; x < xSize; x++)
             {
-                gridStr += grid[x][y].CheckSquar();
+                gridStr += grid[x][y].CheckSquare();
             }
 
             if (y < ySize - 1)
@@ -50,6 +38,23 @@ public class Grid {
         }
 
         return gridStr;
+    }
+
+    public int GetScore()
+    {
+        return time;
+    }
+
+    private void GenerateGrid()
+    {
+        grid = new GridSquare[xSize][ySize];
+        for(int y = 0; y < xSize; y++)
+        {
+            for (int x = 0; x < ySize; x++)
+            {
+                grid[x][y] = new GridSquare(x, y, 0);
+            }
+        }
     }
 
 }
