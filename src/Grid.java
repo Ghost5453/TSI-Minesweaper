@@ -11,24 +11,24 @@ public class Grid {
         this.xSize = myXSize;
         this.ySize = myYSize;
         this.mines = myMines;
-        GenerateGrid();
+        PlaceMines();
+        RenderGrid();
     }
 
     public String RenderGrid()
     {
         String gridStr;
-        List<Character> gridCharacterList;
-        char[] gridCharArr;
-        int stringCounter;
-
-        gridCharacterList = new ArrayList<Character>();
         gridStr ="";
 
         for (int y = 0; y < ySize; y++)
         {
             for (int x = 0; x < xSize; x++)
             {
-                gridStr += grid[x][y].CheckSquare();
+                gridStr += grid[y][x].CheckSquare();
+                if (x < xSize - 1)
+                {
+                    gridStr += ' ';
+                }
             }
 
             if (y < ySize - 1)
@@ -45,14 +45,51 @@ public class Grid {
         return time;
     }
 
-    private void GenerateGrid()
+    private void PlaceMines()
     {
-        grid = new GridSquare[xSize][ySize];
+        Math.random();
+
+        int[][] mineMask = new int[ySize][xSize];
+        int minesLeft;
+
+        minesLeft = mines;
+
+        for (int y = 0; y < ySize; y++ )
+        {
+            for (int x = 0; x < xSize; x++)
+            {
+                mineMask[y][x] = 0;
+            }
+        }
+
+        while (minesLeft > 0)
+        {
+            int x, y;
+
+            x = (int) (Math.random() * xSize);
+            y = (int) (Math.random() * ySize);
+
+            System.out.println("x: " + x + ", y: " + y);
+
+            if(mineMask[y][x] == 0)
+            {
+                mineMask[y][x] = -1;
+                minesLeft--;
+            }
+        }
+
+        GenerateGrid(mineMask);
+
+    }
+
+    private void GenerateGrid(int[][] myMineMask)
+    {
+        grid = new GridSquare[ySize][xSize];
         for(int y = 0; y < xSize; y++)
         {
             for (int x = 0; x < ySize; x++)
             {
-                grid[x][y] = new GridSquare(x, y, 0);
+                grid[y][x] = new GridSquare(myMineMask[y][x]);
             }
         }
     }

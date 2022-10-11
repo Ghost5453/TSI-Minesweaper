@@ -1,14 +1,15 @@
 public class GridSquare {
 
     private int contents, xPosition, yPosition;
-    private boolean flaged, reveled;
+    private boolean flagged, reveled;
     private char image;
 
-    GridSquare(int myX, int myY, int myContents){
-        this.xPosition = myX;
-        this.yPosition = myY;
+    GridSquare(/*int myX, int myY,*/ int myContents){
+//        this.xPosition = myX;
+//        this.yPosition = myY;
         this.contents = myContents;
-        this.flaged = false;
+        this.flagged = false;
+        this.reveled = true;
         UpdateImage();
     }
 
@@ -19,11 +20,11 @@ public class GridSquare {
     }
 
     public void FlagSquare(){
-        flaged = !flaged;
+        flagged = !flagged;
         UpdateImage();
     }
 
-    public void ReveleSquare()
+    public void RevelSquare()
     {
         reveled = true;
         UpdateImage();
@@ -35,7 +36,7 @@ public class GridSquare {
         {
             if (contents == 0)
             {
-                image = '\u25A0';
+                image = '\u25A1';
 
             } else if (contents > 0 && contents <= 8)
             {
@@ -44,16 +45,17 @@ public class GridSquare {
 
             } else
             {
-                Main.EndGame(false);
+//                Main.EndGame(false);
+                image = '\u00D7';
             }
         }else
         {
-            if(flaged)
+            if(flagged)
             {
                 image = '\u22A0';
             }else {
 
-                image = '\u25A1';
+                image = '\u25A0';
 
             }
         }
