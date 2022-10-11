@@ -1,12 +1,11 @@
 public class GridSquare {
 
-    private int contents, xPosition, yPosition;
+    private int contents;
     private boolean flagged, reveled;
     private char image;
 
-    GridSquare(/*int myX, int myY,*/ int myContents){
-//        this.xPosition = myX;
-//        this.yPosition = myY;
+    GridSquare(int myContents){
+
         this.contents = myContents;
         this.flagged = false;
         this.reveled = true;

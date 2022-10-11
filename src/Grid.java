@@ -1,18 +1,15 @@
-import java.util.ArrayList;
-import java.util.List;
-
 public class Grid {
 
     private int mines, time, xSize, ySize;
     private GridSquare[][] grid;
 
-    Grid(int myXSize, int myYSize, int myMines){
+    Grid(int myHeight, int myWidth, int mines){
 
-        this.xSize = myXSize;
-        this.ySize = myYSize;
-        this.mines = myMines;
+        this.xSize = myWidth;
+        this.ySize = myHeight;
+        this.mines = mines;
         PlaceMines();
-        RenderGrid();
+        //RenderGrid();
     }
 
     public String RenderGrid()
@@ -47,8 +44,6 @@ public class Grid {
 
     private void PlaceMines()
     {
-        Math.random();
-
         int[][] mineMask = new int[ySize][xSize];
         int minesLeft;
 
@@ -85,9 +80,9 @@ public class Grid {
     private void GenerateGrid(int[][] myMineMask)
     {
         grid = new GridSquare[ySize][xSize];
-        for(int y = 0; y < xSize; y++)
+        for(int y = 0; y < ySize; y++)
         {
-            for (int x = 0; x < ySize; x++)
+            for (int x = 0; x < xSize; x++)
             {
                 grid[y][x] = new GridSquare(myMineMask[y][x]);
             }
