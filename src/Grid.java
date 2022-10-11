@@ -1,6 +1,6 @@
 public class Grid {
 
-    private int mines, time, xSize, ySize;
+    private int mines, time, xSize, ySize, newY;
     private GridSquare[][] grid;
 
     Grid(int myHeight, int myWidth, int mines){
@@ -17,18 +17,22 @@ public class Grid {
         String gridStr;
         gridStr ="y\n";
 
+        newY = ySize - 1;
+
         for (int y = 0; y < ySize; y++)
         {
-            gridStr += y;
+            gridStr += newY;
             gridStr += "  ";
             for (int x = 0; x < xSize; x++)
             {
-                gridStr += grid[y][x].CheckSquare();
+                gridStr += grid[newY][x].CheckSquare();
                 if (x < xSize - 1)
                 {
                     gridStr += ' ';
                 }
             }
+
+            newY--;
 
             gridStr += '\n';
         }
@@ -61,7 +65,7 @@ public class Grid {
         {
             for (int x = 0; x < xSize; x++)
             {
-                mineMask[y][x] = 0;
+                mineMask[newY][x] = 0;
             }
         }
 

@@ -5,7 +5,7 @@ public class Main {
         Scanner input = new Scanner(System.in);
         String output;
 
-        Grid newGame = new Grid(5,8,20);
+        Grid newGame = new Grid(10,8,50);
         output = newGame.RenderGrid();
         System.out.println(output);
         input.nextLine();
