@@ -33,11 +33,7 @@ public class GridSquare {
     {
         if (reveled)
         {
-            if (contents == 0)
-            {
-                image = '\u25A1';
-
-            } else if (contents > 0 && contents <= 8)
+            if (contents >= 0 && contents <= 8)
             {
                 image = Character.forDigit(contents, 10);
 
