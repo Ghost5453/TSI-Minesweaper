@@ -15,10 +15,12 @@ public class Grid {
     public String RenderGrid()
     {
         String gridStr;
-        gridStr ="";
+        gridStr ="y\n";
 
         for (int y = 0; y < ySize; y++)
         {
+            gridStr += y;
+            gridStr += "  ";
             for (int x = 0; x < xSize; x++)
             {
                 gridStr += grid[y][x].CheckSquare();
@@ -28,11 +30,17 @@ public class Grid {
                 }
             }
 
-            if (y < ySize - 1)
-            {
-                gridStr += '\n';
-            }
+            gridStr += '\n';
         }
+
+        gridStr += "   ";
+
+        for (int x = 0; x < xSize; x++)
+        {
+            gridStr = gridStr + x + " ";
+        }
+
+        gridStr += "x";
 
         return gridStr;
     }
@@ -79,6 +87,7 @@ public class Grid {
 
     private void GenerateGrid(int[][] myMineMask)
     {
+        System.out.println("");
         grid = new GridSquare[ySize][xSize];
         for(int y = 0; y < ySize; y++)
         {
