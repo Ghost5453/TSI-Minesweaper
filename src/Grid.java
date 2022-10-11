@@ -8,7 +8,7 @@ public class Grid {
         this.xSize = myWidth;
         this.ySize = myHeight;
         this.mines = mines;
-        PlaceMines();
+        AssignGridValues();
         //RenderGrid();
     }
 
@@ -22,7 +22,7 @@ public class Grid {
         for (int y = 0; y < ySize; y++)
         {
             gridStr += newY;
-            gridStr += "  ";
+            gridStr += "   ";
             for (int x = 0; x < xSize; x++)
             {
                 gridStr += grid[newY][x].CheckSquare();
@@ -34,8 +34,10 @@ public class Grid {
 
             newY--;
 
-            gridStr += '\n';
+            gridStr += "\n";
         }
+
+        gridStr += "\n";
 
         gridStr += "   ";
 
@@ -54,9 +56,9 @@ public class Grid {
         return time;
     }
 
-    private void PlaceMines()
+    private void AssignGridValues()
     {
-        int[][] mineMask = new int[ySize][xSize];
+        int[][] numberGrid = new int[ySize][xSize];
         int minesLeft;
 
         minesLeft = mines;
@@ -65,7 +67,7 @@ public class Grid {
         {
             for (int x = 0; x < xSize; x++)
             {
-                mineMask[newY][x] = 0;
+                numberGrid[y][x] = 0;
             }
         }
 
@@ -78,14 +80,58 @@ public class Grid {
 
             System.out.println("x: " + x + ", y: " + y);
 
-            if(mineMask[y][x] == 0)
+            if(numberGrid[y][x] == 0)
             {
-                mineMask[y][x] = -1;
+                numberGrid[y][x] = -1;
                 minesLeft--;
             }
         }
 
-        GenerateGrid(mineMask);
+        for (int y = 0; y < ySize; y++)
+        {
+            for (int x = 0; x < xSize; x++)
+            {
+                if (numberGrid[y][x] == -1)
+                {
+                    for (int localY = -1; localY <= 1; localY++)
+                    {
+                        for (int localX = -1; localX <= 1; localX++)
+                        {
+                            int yTest, xTest;
+                            boolean yOver =true, xOver = true;
+
+                            if (localY == 0 && localX == 0)
+                                continue;
+
+                            yTest = localY + y;
+                            xTest = localX + x;
+
+                            if (yTest < ySize && yTest >= 0)
+                            {
+                                yOver = false;
+                            }
+
+                            if (xTest < xSize && xTest >=0)
+                            {
+                                xOver = false;
+
+                            }
+
+                            if (xOver || yOver)
+                                continue;
+
+                            if (numberGrid[yTest][xTest] >= 0)
+                            {
+                                numberGrid[yTest][xTest] += 1;
+                            }
+
+                        }
+                    }
+                }
+            }
+        }
+
+        GenerateGrid(numberGrid);
 
     }
 

@@ -39,8 +39,7 @@ public class GridSquare {
 
             } else if (contents > 0 && contents <= 8)
             {
-                char[] myCharArr = Character.toChars(contents);
-                image = myCharArr[0];
+                image = Character.forDigit(contents, 10);
 
             } else
             {
