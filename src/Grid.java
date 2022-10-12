@@ -1,6 +1,6 @@
 public class Grid {
 
-    private int mines, time, xSize, ySize, newY;
+    private int mines, time, xSize, ySize, newY, flagedMines;
     private GridSquare[][] grid;
 
     Grid(int myHeight, int myWidth, int mines){
@@ -12,6 +12,38 @@ public class Grid {
         //RenderGrid();
     }
 
+    public void Flag(int myX, int myY)
+    {
+        grid[myY][myX].FlagSquare();
+
+        if (grid[myY][myX].GetFlag())
+        {
+            flagedMines++;
+        }
+        else
+        {
+            flagedMines--;
+        }
+        RenderGrid();
+    }
+
+    public void Check(int myX, int myY)
+    {
+        if (grid[myY][myX].GetReveled())
+        {
+            System.out.println("This tile has already been reveled");
+        }else {
+            if (grid[myY][myX].GetFlag())
+            {
+                System.out.println("You cannot check flagged tiles");
+            }else
+            {
+                RecursiveRevel(myX, myY);
+            }
+        }
+        RenderGrid();
+    }
+
     public String RenderGrid()
     {
         String gridStr;
@@ -19,10 +51,27 @@ public class Grid {
 
         for (int y = ySize - 1; y >= 0; y--)
         {
+            if (y < 100 && ySize > 100)
+            {
+                gridStr += "0";
+            }
+            if (y < 10 && ySize > 10)
+            {
+                gridStr += "0";
+            }
+
             gridStr += y;
             gridStr += "   ";
             for (int x = 0; x < xSize; x++)
             {
+                if (xSize > 100)
+                {
+                    gridStr += " ";
+                }
+                if (xSize > 10)
+                {
+                    gridStr += " ";
+                }
                 gridStr += grid[y][x].CheckSquare();
                 if (x < xSize - 1)
                 {
@@ -35,10 +84,28 @@ public class Grid {
 
         gridStr += "\n";
 
+        if (ySize > 100)
+        {
+            gridStr += " ";
+        }
+
+        if (ySize > 10)
+        {
+            gridStr += " ";
+        }
+
         gridStr += "    ";
 
         for (int x = 0; x < xSize; x++)
         {
+            if (x < 100 && xSize > 100)
+            {
+                gridStr += "0";
+            }
+            if (x < 10 && xSize > 10)
+            {
+                gridStr += "0";
+            }
             gridStr = gridStr + x + " ";
         }
 
@@ -47,9 +114,52 @@ public class Grid {
         return gridStr;
     }
 
-    public int GetScore()
+    public int MinesLeft()
     {
-        return time;
+        return mines - flagedMines;
+    }
+
+    private void RecursiveRevel(int myX, int myY)
+    {
+        int newX, newY;
+        boolean yInRange = false, xInRange = false, checked;
+
+        checked = grid[myY][myX].GetReveled();
+        grid[myY][myX].RevelSquare();
+
+        if (grid[myY][myX].GetContents() == 0 && !checked)
+        {
+            for (int dY = -1; dY <= 1; dY++)
+            {
+                newY = dY + myY;
+                for (int dX = -1; dX <= 1; dX++)
+                {
+                    xInRange = false;
+                    yInRange = false;
+
+                    newX = dX + myX;
+
+                    if (newX == myX && newY == myY)
+                    {
+                        continue;
+                    }
+
+                    if (newX >= 0 && newX < xSize)
+                        xInRange = true;
+
+                    if (newY >= 0 && newY < ySize)
+                        yInRange = true;
+
+                    if (yInRange && xInRange)
+                    {
+                        RecursiveRevel(newX, newY);
+                    }
+                }
+            }
+        }
+
+
+
     }
 
     private void AssignGridValues()
@@ -142,6 +252,16 @@ public class Grid {
                 grid[y][x] = new GridSquare(myMineMask[y][x]);
             }
         }
+    }
+
+    public int GetScore()
+    {
+        return time;
+    }
+
+    public int GetRemainingMines()
+    {
+        return mines - flagedMines;
     }
 
 }

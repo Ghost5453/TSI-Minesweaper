@@ -6,64 +6,104 @@ public class Main {
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
         String output, inputString, lowerString;
-        String[] parcedInput;
-        Grid newGame;
         char action;
-        int counter, height, width, mines;
-        Mode beginner = new Mode(9, 9, 10);
-        Mode intermediate = new Mode(16, 16, 40);
-        Mode expert = new Mode(30, 16, 99);
-        Mode current;
+        int counter, height, width, mines, xCoordinate, yCoordinate;
+        boolean inGame = true, playing;
 
-        System.out.println("What difficulty do you want to play:\n((B)eginner, (I)ntermediate, (E)xpert or (C)ustom");
+        String[] parcedInput;
+        Grid game;
+        Mode beginner = new Mode(9, 9, 10), intermediate = new Mode(16, 16, 40), expert = new Mode(30, 16, 99), current;
 
-        inputString = input.nextLine();
-        parcedInput = InputParsing(inputString);
+        do{
+            System.out.println("What difficulty do you want to play:\n((B)eginner, (I)ntermediate, (E)xpert or (C)ustom");
 
-        lowerString = parcedInput[0].toLowerCase();
-        action = lowerString.charAt(0);
-
-        if (action == 'b')
-        {
-            current = beginner;
-        } else if(action == 'i')
-        {
-            current = intermediate;
-        } else if(action == 'e')
-        {
-            current = expert;
-        } else if(action == 'c')
-        {
-            System.out.println("What format do you want to use\n (type in the form: \"height\" \"width\" \"mines\")");
             inputString = input.nextLine();
             parcedInput = InputParsing(inputString);
 
-            try {
-                height = Integer.valueOf(parcedInput[0]).intValue();
-                width = Integer.valueOf(parcedInput[1]).intValue();
-                mines = Integer.valueOf(parcedInput[2]).intValue();
+            lowerString = parcedInput[0].toLowerCase();
+            action = lowerString.charAt(0);
 
-                current = new Mode(height, width, mines);
-
-            } catch (Exception fail)
+            if (action == 'b')
             {
-                System.out.println("Invalid input using intermediate");
+                current = beginner;
+            } else if(action == 'i')
+            {
+                current = intermediate;
+            } else if(action == 'e')
+            {
+                current = expert;
+            } else if(action == 'c')
+            {
+                System.out.println("What format do you want to use\n(type in the form: \"height\" \"width\" \"mines\")");
+                inputString = input.nextLine();
+                parcedInput = InputParsing(inputString);
+
+                try {
+                    height = Integer.valueOf(parcedInput[0]).intValue();
+                    width = Integer.valueOf(parcedInput[1]).intValue();
+                    mines = Integer.valueOf(parcedInput[2]).intValue();
+
+                    current = new Mode(height, width, mines);
+
+                } catch (Exception fail)
+                {
+                    System.out.println("Invalid input using intermediate");
+                    current = intermediate;
+                }
+            } else
+            {
+                System.out.println("Invalid input using Intermediate");
                 current = intermediate;
             }
 
 
-        } else
-        {
-            System.out.println("Invalid input using Intermediate");
-            current = intermediate;
-        }
 
-        newGame = new Grid(current.height, current.width, current.mines);
-        output = newGame.RenderGrid();
-        System.out.println(output);
+            // In game
 
-        input.nextLine();
+            game = new Grid(current.height, current.width, current.mines);
+            playing = true;
 
+            do {
+                System.out.println("There are: " + game.GetRemainingMines() + " left");
+                output = game.RenderGrid();
+                System.out.println(output);
+                System.out.println("List of commands:\nCheck \"X coordinate\" \"Y coordinator\"\nFlag \"X coordinate\" \"Y coordinator\"\n Check revels the square and Flag makes the square");
+
+                inputString = input.nextLine();
+                parcedInput = InputParsing(inputString);
+
+                try
+                {
+                    lowerString = parcedInput[0].toLowerCase();
+                    action = lowerString.charAt(0);
+                    xCoordinate = Integer.valueOf(parcedInput[1]).intValue();
+                    yCoordinate = Integer.valueOf(parcedInput[2]).intValue();
+
+                }catch (Exception fail)
+                {
+                    System.out.println("Invalid input");
+                    continue;
+                }
+
+                if (action == 'f')
+                {
+                    game.Flag(xCoordinate,yCoordinate);
+                }else if(action == 'c')
+                {
+                    game.Check(xCoordinate,yCoordinate);
+                } else
+                {
+                    System.out.println("Invalid action");
+                }
+
+            }while (playing);
+
+            output = game.RenderGrid();
+            System.out.println(output);
+
+            input.nextLine();
+
+        }while (inGame);
     }
 
     public static String[] InputParsing (String input)

@@ -8,7 +8,7 @@ public class GridSquare {
 
         this.contents = myContents;
         this.flagged = false;
-        this.reveled = true;
+        this.reveled = false;
         UpdateImage();
     }
 
@@ -25,13 +25,10 @@ public class GridSquare {
 
     public void RevelSquare()
     {
-        if (!flagged)
+        if (!flagged && !reveled)
         {
             reveled = true;
             UpdateImage();
-        }else
-        {
-            System.out.println("Unflag the square before reveling");
         }
     }
 
@@ -59,6 +56,21 @@ public class GridSquare {
 
             }
         }
+    }
+
+    public boolean GetFlag()
+    {
+        return flagged;
+    }
+
+    public boolean GetReveled()
+    {
+        return reveled;
+    }
+
+    public int GetContents()
+    {
+        return contents;
     }
 
 }
