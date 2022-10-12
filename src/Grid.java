@@ -48,10 +48,11 @@ public class Grid {
     public String RenderGrid()
     {
         String gridStr;
-        gridStr ="y\n";
+        gridStr ="\033[0;36m" + "y\n" + "\033[0;37m";
 
         for (int y = ySize - 1; y >= 0; y--)
         {
+            gridStr += "\033[0;36m";
             if (y < 100 && ySize > 100)
             {
                 gridStr += "0";
@@ -61,8 +62,8 @@ public class Grid {
                 gridStr += "0";
             }
 
-            gridStr += y;
-            gridStr += "   ";
+            gridStr = gridStr + y + "\033[0;37m" + " ";
+
             for (int x = 0; x < xSize; x++)
             {
                 if (xSize > 100)
@@ -93,7 +94,9 @@ public class Grid {
             gridStr += " ";
         }
 
-        gridStr += "    ";
+        gridStr += "  ";
+
+        gridStr += "\033[0;36m";
 
         for (int x = 0; x < xSize; x++)
         {
@@ -109,6 +112,7 @@ public class Grid {
         }
 
         gridStr += "x";
+        gridStr += "\033[0;37m";
 
         return gridStr;
     }
