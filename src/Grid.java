@@ -17,29 +17,25 @@ public class Grid {
         String gridStr;
         gridStr ="y\n";
 
-        newY = ySize - 1;
-
-        for (int y = 0; y < ySize; y++)
+        for (int y = ySize - 1; y >= 0; y--)
         {
-            gridStr += newY;
+            gridStr += y;
             gridStr += "   ";
             for (int x = 0; x < xSize; x++)
             {
-                gridStr += grid[newY][x].CheckSquare();
+                gridStr += grid[y][x].CheckSquare();
                 if (x < xSize - 1)
                 {
                     gridStr += ' ';
                 }
             }
 
-            newY--;
-
             gridStr += "\n";
         }
 
         gridStr += "\n";
 
-        gridStr += "   ";
+        gridStr += "    ";
 
         for (int x = 0; x < xSize; x++)
         {

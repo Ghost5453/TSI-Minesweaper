@@ -25,8 +25,14 @@ public class GridSquare {
 
     public void RevelSquare()
     {
-        reveled = true;
-        UpdateImage();
+        if (!flagged)
+        {
+            reveled = true;
+            UpdateImage();
+        }else
+        {
+            System.out.println("Unflag the square before reveling");
+        }
     }
 
     private void UpdateImage()
