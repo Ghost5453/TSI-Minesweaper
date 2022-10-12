@@ -1,6 +1,7 @@
 public class Grid {
 
     private int mines, time, xSize, ySize, newY, flagedMines;
+    private boolean foundAllMins, foundAllSafe;
     private GridSquare[][] grid;
 
     Grid(int myHeight, int myWidth, int mines){
@@ -9,7 +10,7 @@ public class Grid {
         this.ySize = myHeight;
         this.mines = mines;
         AssignGridValues();
-        //RenderGrid();
+        RenderGrid();
     }
 
     public void Flag(int myX, int myY)
@@ -24,7 +25,7 @@ public class Grid {
         {
             flagedMines--;
         }
-        RenderGrid();
+        CheckWin();
     }
 
     public void Check(int myX, int myY)
@@ -41,7 +42,7 @@ public class Grid {
                 RecursiveRevel(myX, myY);
             }
         }
-        RenderGrid();
+        CheckWin();
     }
 
     public String RenderGrid()
@@ -81,8 +82,6 @@ public class Grid {
 
             gridStr += "\n";
         }
-
-        gridStr += "\n";
 
         if (ySize > 100)
         {
@@ -127,6 +126,11 @@ public class Grid {
         checked = grid[myY][myX].GetReveled();
         grid[myY][myX].RevelSquare();
 
+        if (grid[myY][myX].GetContents() == -1)
+        {
+            Main.SetPlaying(false);
+        }
+
         if (grid[myY][myX].GetContents() == 0 && !checked)
         {
             for (int dY = -1; dY <= 1; dY++)
@@ -162,6 +166,43 @@ public class Grid {
 
     }
 
+    private void CheckWin()
+    {
+        foundAllMins = foundAllSafe = true;
+
+       for (int y = 0; y < ySize; y++)
+       {
+           for (int x = 0; x < xSize; x++)
+           {
+               if (grid[y][x].GetContents() >= 0)
+               {
+                   if (!grid[y][x].GetReveled())
+                   {
+                       foundAllSafe = false;
+                   }
+               } else
+               {
+                   if (!grid[y][x].GetFlag())
+                   {
+                       foundAllMins = false;
+                   }
+               }
+           }
+       }
+
+        System.out.println("Found all mines: " + foundAllMins);
+        System.out.println("Found all safe: " + foundAllSafe);
+
+       if (foundAllSafe && foundAllMins)
+       {
+           Main.SetWin(true);
+           Main.SetPlaying(false);
+       }else
+       {
+           RenderGrid();
+       }
+    }
+
     private void AssignGridValues()
     {
         int[][] numberGrid = new int[ySize][xSize];
@@ -183,8 +224,6 @@ public class Grid {
 
             x = (int) (Math.random() * xSize);
             y = (int) (Math.random() * ySize);
-
-            System.out.println("x: " + x + ", y: " + y);
 
             if(numberGrid[y][x] == 0)
             {

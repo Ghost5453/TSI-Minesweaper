@@ -3,6 +3,8 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Main {
+
+    private static boolean Playing, Win;
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
         String output, inputString, lowerString;
@@ -13,6 +15,9 @@ public class Main {
         String[] parcedInput;
         Grid game;
         Mode beginner = new Mode(9, 9, 10), intermediate = new Mode(16, 16, 40), expert = new Mode(30, 16, 99), current;
+
+        Main.SetPlaying(true);
+
 
         do{
             System.out.println("What difficulty do you want to play:\n((B)eginner, (I)ntermediate, (E)xpert or (C)ustom");
@@ -67,7 +72,7 @@ public class Main {
                 System.out.println("There are: " + game.GetRemainingMines() + " left");
                 output = game.RenderGrid();
                 System.out.println(output);
-                System.out.println("List of commands:\nCheck \"X coordinate\" \"Y coordinator\"\nFlag \"X coordinate\" \"Y coordinator\"\n Check revels the square and Flag makes the square");
+                System.out.println("List of commands:\nCheck \"X coordinate\" \"Y coordinator\"\nFlag \"X coordinate\" \"Y coordinator\"\nCheck revels the square and Flag makes the square");
 
                 inputString = input.nextLine();
                 parcedInput = InputParsing(inputString);
@@ -96,14 +101,45 @@ public class Main {
                     System.out.println("Invalid action");
                 }
 
-            }while (playing);
+            }while (GetPlaying());
 
-            output = game.RenderGrid();
-            System.out.println(output);
+            System.out.println("Would you like to play again\n\"yes\" or \"no\"");
+            inputString = input.nextLine();
+            lowerString = inputString.toLowerCase();
+            parcedInput = InputParsing(lowerString);
+            action = parcedInput[0].charAt(0);
 
-            input.nextLine();
+            if (action == 'n')
+            {
+                inGame = false;
+            } else if (action == 'y')
+            {
+
+            } else
+            {
+                System.out.println("Invalid input type \"yes\" or \"no\"");
+            }
 
         }while (inGame);
+    }
+
+    public static boolean GetWin()
+    {
+        return Win;
+    }
+
+    public static void SetWin(boolean myBool)
+    {
+        Win = myBool;
+    }
+
+    public static void SetPlaying (boolean myBool)
+    {
+        Playing = myBool;
+    }
+    public static boolean GetPlaying()
+    {
+        return Playing;
     }
 
     public static String[] InputParsing (String input)
@@ -146,6 +182,7 @@ public class Main {
 
     public static void EndGame(boolean myWin)
     {
+
         if (myWin)
         {
             System.out.println("Congratulations you did it :)");
