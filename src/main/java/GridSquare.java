@@ -23,7 +23,7 @@ public class GridSquare {
         UpdateImage();
     }
 
-    public void ForceRevele()
+    public void ForceRevel()
     {
         reveled = true;
         UpdateImage();
@@ -53,8 +53,7 @@ public class GridSquare {
                 }
             } else
             {
-//                Main.EndGame(false);
-                image = "\u00D7";
+                image = "\033[0;31m\u00D7\033[0;37m";
             }
         }else
         {
@@ -83,5 +82,4 @@ public class GridSquare {
     {
         return contents;
     }
-
 }

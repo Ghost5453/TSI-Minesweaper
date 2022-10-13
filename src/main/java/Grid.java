@@ -1,7 +1,7 @@
 public class Grid {
 
-    private int mines, time, xSize, ySize, newY, flagedMines;
-    private boolean foundAllMins, foundAllSafe;
+    private int mines, xSize, ySize, flaggedMines;
+    private boolean foundAllMinis, foundAllSafe;
     private GridSquare[][] grid;
 
     Grid(int myHeight, int myWidth, int mines){
@@ -19,11 +19,11 @@ public class Grid {
 
         if (grid[myY][myX].GetFlag())
         {
-            flagedMines++;
+            flaggedMines++;
         }
         else
         {
-            flagedMines--;
+            flaggedMines--;
         }
         CheckWin();
     }
@@ -75,7 +75,6 @@ public class Grid {
                     gridStr += ' ';
                 }
             }
-
             gridStr += "\n";
         }
 
@@ -114,7 +113,7 @@ public class Grid {
 
     public int MinesLeft()
     {
-        return mines - flagedMines;
+        return mines - flaggedMines;
     }
     public void ForceRevealAll()
     {
@@ -122,7 +121,7 @@ public class Grid {
         {
             for(int x = 0; x< xSize; x++)
             {
-                grid[y][x].ForceRevele();
+                grid[y][x].ForceRevel();
             }
         }
         RenderGrid();
@@ -138,48 +137,45 @@ public class Grid {
 
         if (grid[myY][myX].GetContents() == -1)
         {
-            Main.EndGame(false);
-            //Main.SetPlaying(false);
-        }
-
-        if (grid[myY][myX].GetContents() == 0 && !checked)
+            Main.SetPlaying(false);
+        } else
         {
-            for (int dY = -1; dY <= 1; dY++)
+            if (grid[myY][myX].GetContents() == 0 && !checked)
             {
-                newY = dY + myY;
-                for (int dX = -1; dX <= 1; dX++)
+                for (int dY = -1; dY <= 1; dY++)
                 {
-                    xInRange = false;
-                    yInRange = false;
-
-                    newX = dX + myX;
-
-                    if (newX == myX && newY == myY)
+                    newY = dY + myY;
+                    for (int dX = -1; dX <= 1; dX++)
                     {
-                        continue;
-                    }
+                        xInRange = false;
+                        yInRange = false;
 
-                    if (newX >= 0 && newX < xSize)
-                        xInRange = true;
+                        newX = dX + myX;
 
-                    if (newY >= 0 && newY < ySize)
-                        yInRange = true;
+                        if (newX == myX && newY == myY)
+                        {
+                            continue;
+                        }
 
-                    if (yInRange && xInRange)
-                    {
-                        RecursiveRevel(newX, newY);
+                        if (newX >= 0 && newX < xSize)
+                            xInRange = true;
+
+                        if (newY >= 0 && newY < ySize)
+                            yInRange = true;
+
+                        if (yInRange && xInRange)
+                        {
+                            RecursiveRevel(newX, newY);
+                        }
                     }
                 }
             }
         }
-
-
-
     }
 
     private void CheckWin()
     {
-        foundAllMins = foundAllSafe = true;
+        foundAllMinis = foundAllSafe = true;
 
        for (int y = 0; y < ySize; y++)
        {
@@ -195,13 +191,13 @@ public class Grid {
                {
                    if (!grid[y][x].GetFlag())
                    {
-                       foundAllMins = false;
+                       foundAllMinis = false;
                    }
                }
            }
        }
 
-       if (foundAllSafe && foundAllMins)
+       if (foundAllSafe && foundAllMinis)
        {
            Main.EndGame(true);
        }else
@@ -281,9 +277,7 @@ public class Grid {
                 }
             }
         }
-
         GenerateGrid(numberGrid);
-
     }
 
     private void GenerateGrid(int[][] myMineMask)
@@ -299,10 +293,8 @@ public class Grid {
         }
     }
 
-
     public int GetRemainingMines()
     {
-        return mines - flagedMines;
+        return mines - flaggedMines;
     }
-
 }

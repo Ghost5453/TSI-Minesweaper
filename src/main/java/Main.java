@@ -1,3 +1,5 @@
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -9,15 +11,14 @@ public class Main {
         Scanner input = new Scanner(System.in);
         String output, inputString, lowerString;
         char action;
-        int counter, height, width, mines, xCoordinate, yCoordinate;
-        boolean inGame = true, playing, validInput;
+        int height, width, mines, xCoordinate, yCoordinate;
+        boolean inGame = true, validInput;
 
         String[] parcedInput;
         Grid game;
         Mode beginner = new Mode(9, 9, 10), intermediate = new Mode(16, 16, 40), expert = new Mode(30, 16, 99), current;
 
         Main.SetPlaying(true);
-
 
         do{
             do {
@@ -79,12 +80,9 @@ public class Main {
 
             }while (!validInput);
 
-
-
             // In game
 
             game = new Grid(current.height, current.width, current.mines);
-            playing = true;
 
             do {
                 System.out.println("There are: " + game.GetRemainingMines() + " left");
@@ -138,10 +136,13 @@ public class Main {
                     {
                         System.out.println("Invalid action");
                     }
+                    if (!GetPlaying())
+                    {
+                        game.ForceRevealAll();
+                        System.out.println(game.RenderGrid());
+                        EndGame(false);
+                    }
                 }
-
-
-
             }while (GetPlaying());
 
             System.out.println("Would you like to play again\n\"yes\" or \"no\"");
@@ -160,7 +161,6 @@ public class Main {
             {
                 System.out.println("Invalid input type \"yes\" or \"no\"");
             }
-
         }while (inGame);
     }
 
@@ -183,7 +183,7 @@ public class Main {
         return Playing;
     }
 
-    public static String[] InputParsing (String input)
+    public static String @NotNull [] InputParsing (@NotNull String input)
     {
         char[] inputCharArray;
         String[] returnStrings;
