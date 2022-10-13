@@ -10,11 +10,13 @@ public class Main {
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
         String output, inputString, lowerString;
+
         char action;
-        int height, width, mines, xCoordinate, yCoordinate;
+        int height, width, mines, xCoordinate, yCoordinate, extraOutputs, maxCash = 5;
         boolean inGame = true, validInput;
 
-        String[] parcedInput;
+        String[] chasedInputStrings = new String[maxCash];
+        String[] parsedInput;
         Grid game;
         Mode beginner = new Mode(9, 9, 10), intermediate = new Mode(16, 16, 40), expert = new Mode(30, 16, 99), current;
 
@@ -22,14 +24,16 @@ public class Main {
 
         do{
             do {
+                int modifier;
+                extraOutputs = 0;
                 validInput = true;
 
                 System.out.println("What difficulty do you want to play:\n((B)eginner, (I)ntermediate, (E)xpert or (C)ustom");
 
                 inputString = input.nextLine();
-                parcedInput = InputParsing(inputString);
+                parsedInput = InputParsing(inputString);
 
-                lowerString = parcedInput[0].toLowerCase();
+                lowerString = parsedInput[0].toLowerCase();
                 action = lowerString.charAt(0);
 
                 if (action == 'b')
@@ -43,14 +47,38 @@ public class Main {
                     current = expert;
                 } else if(action == 'c')
                 {
-                    System.out.println("What format do you want to use\n(type in the form: \"height\" \"width\" \"mines\")");
-                    inputString = input.nextLine();
-                    parcedInput = InputParsing(inputString);
+                    if  (parsedInput.length > 1)
+                    {
+                        if (parsedInput.length >= 3)
+                        {
+                            extraOutputs = 1;
+                        }
+                        else
+                        {
+                            System.out.println("Incomplete secondary input");
+                            extraOutputs = 0;
+                        }
+                    } else
+                    {
+                        extraOutputs = 0;
+                    }
+
+                    if (extraOutputs == 0)
+                    {
+                        System.out.println("What format do you want to use\n(type in the form: \"height\" \"width\" \"mines\")");
+                        inputString = input.nextLine();
+                        parsedInput = InputParsing(inputString);
+                        modifier = 0;
+                    }
+                    else
+                    {
+                        modifier = 1;
+                    }
 
                     try {
-                        height = Integer.valueOf(parcedInput[0]).intValue();
-                        width = Integer.valueOf(parcedInput[1]).intValue();
-                        mines = Integer.valueOf(parcedInput[2]).intValue();
+                        height = Integer.valueOf(parsedInput[0+modifier]).intValue();
+                        width = Integer.valueOf(parsedInput[1+modifier]).intValue();
+                        mines = Integer.valueOf(parsedInput[2+modifier]).intValue();
 
                         if (mines >= (height * width))
                         {
@@ -71,6 +99,7 @@ public class Main {
                         validInput = false;
                         current = intermediate;
                     }
+
                 } else
                 {
                     System.out.println("Invalid input");
@@ -83,6 +112,7 @@ public class Main {
             // In game
 
             game = new Grid(current.height, current.width, current.mines);
+            extraOutputs = 0;
 
             do {
                 System.out.println("There are: " + game.GetRemainingMines() + " left");
@@ -91,9 +121,9 @@ public class Main {
                 System.out.println("List of commands:\nCheck \"X coordinate\" \"Y coordinator\"\nFlag \"X coordinate\" \"Y coordinator\"\nCheck revels the square and Flag makes the square");
 
                 inputString = input.nextLine();
-                parcedInput = InputParsing(inputString);
+                parsedInput = InputParsing(inputString);
 
-                lowerString = parcedInput[0].toLowerCase();
+                lowerString = parsedInput[0].toLowerCase();
                 action = lowerString.charAt(0);
 
                 if(action == 'q')
@@ -101,9 +131,9 @@ public class Main {
                     System.out.println("Do you want to quit\n\"yes\" or \"no\"");
 
                     inputString = input.nextLine();
-                    parcedInput = InputParsing(inputString);
+                    lowerString = inputString.toLowerCase();
+                    parsedInput = InputParsing(lowerString);
 
-                    lowerString = parcedInput[0].toLowerCase();
                     action = lowerString.charAt(0);
 
                     if(action == 'y')
@@ -115,32 +145,61 @@ public class Main {
                     }
                 }else
                 {
-                    try
+                    boolean canCash = false;
+                    int inputCount = 0;
+                    while (canCash)
                     {
-                        xCoordinate = Integer.valueOf(parcedInput[1]).intValue();
-                        yCoordinate = Integer.valueOf(parcedInput[2]).intValue();
+                        if (extraOutputs < maxCash)
+                        {
+                            for (int i = 0; i < 3; i++)
+                            {
+                                chasedInputStrings[extraOutputs] += parsedInput[inputCount];
+                            }
 
-                    }catch (Exception fail)
-                    {
-                        System.out.println("Invalid input");
-                        continue;
+                            extraOutputs++;
+                            inputCount++;
+                            if (inputCount >= parsedInput.length)
+                            {
+                                canCash = false;
+                            }
+                        }
+                        else
+                        {
+                            canCash = false;
+                        }
                     }
 
-                    if (action == 'f')
+                    for (int i = 0; i < inputCount; i++)
                     {
-                        game.Flag(xCoordinate,yCoordinate);
-                    }else if(action == 'c')
-                    {
-                        game.Check(xCoordinate,yCoordinate);
-                    } else
-                    {
-                        System.out.println("Invalid action");
-                    }
-                    if (!GetPlaying())
-                    {
-                        game.ForceRevealAll();
-                        System.out.println(game.RenderGrid());
-                        EndGame(false);
+                        try
+                        {
+                            parsedInput = InputParsing(chasedInputStrings[i]);
+
+                            xCoordinate = Integer.valueOf(parsedInput[1]).intValue();
+                            yCoordinate = Integer.valueOf(parsedInput[2]).intValue();
+
+                        }catch (Exception fail)
+                        {
+                            System.out.println("Invalid input");
+                            continue;
+                        }
+
+                        if (action == 'f')
+                        {
+                            game.Flag(xCoordinate,yCoordinate);
+                        }else if(action == 'c')
+                        {
+                            game.Check(xCoordinate,yCoordinate);
+                        } else
+                        {
+                            System.out.println("Invalid action");
+                        }
+                        if (!GetPlaying())
+                        {
+                            game.ForceRevealAll();
+                            System.out.println(game.RenderGrid());
+                            EndGame(false);
+                        }
                     }
                 }
             }while (GetPlaying());
@@ -148,8 +207,8 @@ public class Main {
             System.out.println("Would you like to play again\n\"yes\" or \"no\"");
             inputString = input.nextLine();
             lowerString = inputString.toLowerCase();
-            parcedInput = InputParsing(lowerString);
-            action = parcedInput[0].charAt(0);
+            parsedInput = InputParsing(lowerString);
+            action = parsedInput[0].charAt(0);
 
             if (action == 'n')
             {
@@ -194,7 +253,6 @@ public class Main {
         inputCharArray = input.toCharArray();
 
         for (char myChar:inputCharArray) {
-
             if (myChar == ' ')
             {
                 if (toAdd != "")
