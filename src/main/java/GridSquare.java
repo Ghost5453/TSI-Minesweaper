@@ -1,7 +1,10 @@
 public class GridSquare {
 
     private int contents;
-    private boolean flagged, reveled;
+
+    private boolean flagged;
+    private boolean reveled;
+
     private String image;
 
     GridSquare(int myContents){

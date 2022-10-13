@@ -4,18 +4,38 @@ import java.util.Scanner;
 
 public class Main {
 
-    private static boolean _playing, _win;
+    private static boolean _playing;
+    private static boolean _win;
+
     private static String _errorMsg;
+
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
-        String output, inputString, lowerString, errorMessage;
-        char action;
-        int height, width, mines, xCoordinate, yCoordinate;
-        boolean inGame = true, validInput;
+
+        String output;
+        String inputString;
+        String lowerString;
 
         String[] parsedInput;
+
+        char action;
+
+        int height;
+        int width;
+        int mines;
+        int xCoordinate;
+        int yCoordinate;
+
+        boolean inGame = true;
+        boolean validInput;
+
+
         Grid game;
-        Mode beginner = new Mode(9, 9, 10), intermediate = new Mode(16, 16, 40), expert = new Mode(30, 16, 99), current;
+
+        Mode beginner = new Mode(9, 9, 10);
+        Mode intermediate = new Mode(16, 16, 40);
+        Mode expert = new Mode(30, 16, 99);
+        Mode current;
 
         Main.SetPlaying(true);
 
@@ -75,13 +95,13 @@ public class Main {
 
                     } catch (Exception fail)
                     {
-                        System.out.println("Invalid input");
+                        System.out.println("\033[0;31mInvalid input\033[0;37m");
                         validInput = false;
                         current = intermediate;
                     }
                 } else
                 {
-                    System.out.println("Invalid input");
+                    System.out.println("\033[0;31mInvalid input\033[0;37m");
                     validInput = false;
                     current = intermediate;
                 }

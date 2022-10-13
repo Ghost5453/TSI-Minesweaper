@@ -1,7 +1,13 @@
 public class Grid {
 
-    private int mines, xSize, ySize, flaggedMines;
-    private boolean foundAllMinis, foundAllSafe;
+    private int mines;
+    private int xSize;
+    private int ySize;
+    private int flaggedMines;
+
+    private boolean foundAllMinis;
+    private  boolean foundAllSafe;
+
     private GridSquare[][] grid;
 
     Grid(int myHeight, int myWidth, int mines){
@@ -117,8 +123,12 @@ public class Grid {
 
     public void RecursiveRevel(int myX, int myY)
     {
-        int newX, newY;
-        boolean yInRange = false, xInRange = false, checked;
+        int newX;
+        int newY;
+
+        boolean yInRange;
+        boolean xInRange;
+        boolean checked;
 
         checked = grid[myY][myX].GetReveled();
         grid[myY][myX].RevelSquare();
@@ -160,7 +170,8 @@ public class Grid {
 
     private void CheckWin()
     {
-        foundAllMinis = foundAllSafe = true;
+        foundAllMinis = true;
+        foundAllSafe = true;
 
        for (int y = 0; y < ySize; y++)
        {
@@ -210,7 +221,8 @@ public class Grid {
 
         while (minesLeft > 0)
         {
-            int x, y;
+            int x;
+            int y;
 
             x = (int) (Math.random() * xSize);
             y = (int) (Math.random() * ySize);
