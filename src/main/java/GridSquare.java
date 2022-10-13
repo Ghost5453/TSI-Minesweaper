@@ -44,7 +44,13 @@ public class GridSquare {
         {
             if (contents >= 0 && contents <= 8)
             {
-                image = " " + String.valueOf(contents) + " ";
+                if(contents > 0)
+                {
+                    image = "\033[0;33m" + String.valueOf(contents) + "\033[0;37m";
+                }else
+                {
+                    image = String.valueOf(contents);
+                }
             } else
             {
 //                Main.EndGame(false);
@@ -54,7 +60,7 @@ public class GridSquare {
         {
             if(flagged)
             {
-                image = "\u22A0";
+                image = "\033[0;31m\u22A0\033[0;37m";
             }else {
 
                 image = "\u25A0";
