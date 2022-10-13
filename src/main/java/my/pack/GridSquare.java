@@ -1,3 +1,5 @@
+package my.pack;
+
 public class GridSquare {
 
     private int contents;

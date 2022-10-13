@@ -1,3 +1,5 @@
+package my.pack;
+
 public class Grid {
 
     private int mines;

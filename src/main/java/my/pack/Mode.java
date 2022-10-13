@@ -1,3 +1,5 @@
+package my.pack;
+
 public class Mode {
 
     int width;
