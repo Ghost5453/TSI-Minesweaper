@@ -153,9 +153,7 @@ public class Grid {
                         newX = dX + myX;
 
                         if (newX == myX && newY == myY)
-                        {
                             continue;
-                        }
 
                         if (newX >= 0 && newX < xSize)
                             xInRange = true;
@@ -164,9 +162,7 @@ public class Grid {
                             yInRange = true;
 
                         if (yInRange && xInRange)
-                        {
                             RecursiveRevel(newX, newY);
-                        }
                     }
                 }
             }
@@ -306,5 +302,10 @@ public class Grid {
     public int GetYMax()
     {
         return  ySize;
+    }
+
+    public boolean CheckFlagged(int x, int y)
+    {
+        return grid[y][x].GetFlag();
     }
 }

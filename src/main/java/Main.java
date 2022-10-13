@@ -1,12 +1,11 @@
-import org.jetbrains.annotations.NotNull;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class Main {
 
-    private static boolean Playing, Win;
+    private static boolean _playing, _win;
+    private static String _errorMsg;
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
         String output, inputString, lowerString, errorMessage;
@@ -21,7 +20,7 @@ public class Main {
         Main.SetPlaying(true);
 
         do{
-            errorMessage ="";
+            SetError("");
             do {
                 validInput = true;
 
@@ -99,20 +98,19 @@ public class Main {
                 System.out.println(output);
                 System.out.println("List of commands:\nCheck \"X coordinate\" \"Y coordinator\"\nFlag \"X coordinate\" \"Y coordinator\"\nQuit \nCheck revels the square, Flag makes the square and Quit ends the game");
 
-                if (!errorMessage.equals(""))
+                if (!GetError().equals(""))
                 {
-                    System.out.println("\n" + errorMessage + "\n");
-                    errorMessage = "";
+                    System.out.println(GetError());
+                    SetError("");
                 }
 
                 inputString = input.nextLine();
 
                 if(inputString.equals(""))
                 {
-                    errorMessage = "\033[0;31mWright a command\033[0;37m";
+                    SetError("Wright a command");
                     continue;
                 }
-
 
                 parcedInput = InputParsing(inputString);
 
@@ -124,10 +122,10 @@ public class Main {
                     System.out.println("Do you want to quit\n\"yes\" or \"no\"");
 
                     inputString = input.nextLine();
-                    parcedInput = InputParsing(inputString);
+                    lowerString = inputString.toLowerCase();
+                    parcedInput = InputParsing(lowerString);
 
-                    lowerString = parcedInput[0].toLowerCase();
-                    action = lowerString.charAt(0);
+                    action = parcedInput[0].charAt(0);
 
                     if(action == 'y')
                     {
@@ -145,19 +143,19 @@ public class Main {
 
                     }catch (Exception fail)
                     {
-                        errorMessage = "\033[0;31mInvalid X or Y input\033[0;37m";
+                        SetError("Invalid X or Y input");
                         continue;
                     }
 
                     if (xCoordinate< 0 || xCoordinate >= game.GetXMax())
                     {
-                        errorMessage = "\033[0;31mX is out of range\033[0;37m";
+                        SetError("X is out of range");
                         continue;
                     }
 
                     if(yCoordinate < 0 || yCoordinate >= game.GetYMax())
                     {
-                        errorMessage = "\033[0;31mY is out of range\033[0;37m";
+                        SetError("Y is out of range");
                         continue;
                     }
 
@@ -166,16 +164,24 @@ public class Main {
                         game.Flag(xCoordinate,yCoordinate);
                     }else if(action == 'c')
                     {
+                        if (game.CheckFlagged(xCoordinate, yCoordinate))
+                            SetError("Square flagged so can't be checked\nUse flag to unflag the square");
+
                         game.Check(xCoordinate,yCoordinate);
                     } else
                     {
-                        errorMessage = "\033[0;31mInvalid action\033[0;37m";
+                        SetError("Invalid action");
                         continue;
                     }
                     if (!GetPlaying())
                     {
                         game.ForceRevealAll();
                         System.out.println(game.RenderGrid());
+                        if(!GetError().equals(""))
+                        {
+                            System.out.println(GetError());
+                            SetError("");
+                        }
                         EndGame(false);
                     }
                 }
@@ -195,28 +201,44 @@ public class Main {
                 SetPlaying(true);
             } else
             {
-                System.out.println("Invalid input type \"yes\" or \"no\"");
+                System.out.println("\033[31mInvalid input type \"yes\" or \"no\"\033[0;37m");
             }
         }while (inGame);
     }
 
     public static boolean GetWin()
     {
-        return Win;
+        return _win;
     }
 
     public static void SetWin(boolean myBool)
     {
-        Win = myBool;
+        _win = myBool;
+    }
+
+    public static void SetError(String myError)
+    {
+        if (myError.equals(""))
+        {
+            _errorMsg = "";
+        }else
+        {
+            _errorMsg = "\n\033[0;31m" + myError + "\033[0;37m\n";
+        }
+    }
+
+    public static String GetError()
+    {
+        return _errorMsg;
     }
 
     public static void SetPlaying (boolean myBool)
     {
-        Playing = myBool;
+        _playing = myBool;
     }
     public static boolean GetPlaying()
     {
-        return Playing;
+        return _playing;
     }
 
     public static String [] InputParsing (String input)
@@ -266,7 +288,7 @@ public class Main {
         }
         else
         {
-            Playing = false;
+            _playing = false;
             System.out.println("You hit a mine");
             System.out.println("Try agan :(");
         }
