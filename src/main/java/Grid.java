@@ -28,18 +28,6 @@ public class Grid {
         CheckWin();
     }
 
-    public void Check(int myX, int myY)
-    {
-        if (!grid[myY][myX].GetReveled())
-        {
-            if (!grid[myY][myX].GetFlag())
-            {
-                RecursiveRevel(myX, myY);
-            }
-        }
-        CheckWin();
-    }
-
     public String RenderGrid()
     {
         String gridStr;
@@ -127,7 +115,7 @@ public class Grid {
         RenderGrid();
     }
 
-    private void RecursiveRevel(int myX, int myY)
+    public void RecursiveRevel(int myX, int myY)
     {
         int newX, newY;
         boolean yInRange = false, xInRange = false, checked;
@@ -167,6 +155,7 @@ public class Grid {
                 }
             }
         }
+        CheckWin();
     }
 
     private void CheckWin()
@@ -195,7 +184,9 @@ public class Grid {
 
        if (foundAllSafe && foundAllMinis)
        {
-           Main.EndGame(true);
+           System.out.println(RenderGrid());
+           Main.SetWin(true);
+           Main.EndGame();
        }else
        {
            RenderGrid();
@@ -307,5 +298,10 @@ public class Grid {
     public boolean CheckFlagged(int x, int y)
     {
         return grid[y][x].GetFlag();
+    }
+
+    public boolean CheckReveled(int x, int y)
+    {
+        return  grid[y][x].GetReveled();
     }
 }

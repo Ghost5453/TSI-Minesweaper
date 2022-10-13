@@ -13,7 +13,7 @@ public class Main {
         int height, width, mines, xCoordinate, yCoordinate;
         boolean inGame = true, validInput;
 
-        String[] parcedInput;
+        String[] parsedInput;
         Grid game;
         Mode beginner = new Mode(9, 9, 10), intermediate = new Mode(16, 16, 40), expert = new Mode(30, 16, 99), current;
 
@@ -35,9 +35,9 @@ public class Main {
                     continue;
                 }
 
-                parcedInput = InputParsing(inputString);
+                parsedInput = InputParsing(inputString);
 
-                lowerString = parcedInput[0].toLowerCase();
+                lowerString = parsedInput[0].toLowerCase();
                 action = lowerString.charAt(0);
 
                 if (action == 'b')
@@ -53,19 +53,19 @@ public class Main {
                 {
                     System.out.println("What format do you want to use\n(type in the form: \"height\" \"width\" \"mines\")");
                     inputString = input.nextLine();
-                    parcedInput = InputParsing(inputString);
+                    parsedInput = InputParsing(inputString);
 
                     try {
-                        height = Integer.valueOf(parcedInput[0]).intValue();
-                        width = Integer.valueOf(parcedInput[1]).intValue();
-                        mines = Integer.valueOf(parcedInput[2]).intValue();
+                        height = Integer.valueOf(parsedInput[0]).intValue();
+                        width = Integer.valueOf(parsedInput[1]).intValue();
+                        mines = Integer.valueOf(parsedInput[2]).intValue();
 
                         if (mines >= (height * width))
                         {
                             int newMines;
-                            System.out.println("Too many mines");
+                            System.out.println("\033[0;31mToo many mines");
                             newMines = (int)((height*width) / 4.85f);
-                            System.out.println("Will use: " + newMines + " mines");
+                            System.out.println("Will use: " + newMines + " mines\033[0;37m");
                             current = new Mode(height, width, newMines);
                         }
                         else
@@ -93,10 +93,19 @@ public class Main {
             game = new Grid(current.height, current.width, current.mines);
 
             do {
-                System.out.println("There are: " + game.GetRemainingMines() + " left");
+                if (game.GetRemainingMines() == 1 || game.GetRemainingMines() == -1 )
+                {
+                    System.out.println("There are: " + game.GetRemainingMines() + " mine left");
+                }
+                else
+                {
+                    System.out.println("There are: " + game.GetRemainingMines() + " mines left");
+                }
+
                 output = game.RenderGrid();
                 System.out.println(output);
-                System.out.println("List of commands:\nCheck \"X coordinate\" \"Y coordinator\"\nFlag \"X coordinate\" \"Y coordinator\"\nQuit \nCheck revels the square, Flag makes the square and Quit ends the game");
+                System.out.println("List of commands:\nCheck \"X coordinate\" \"Y coordinator\"\nFlag \"X coordinate\" \"Y coordinator\"\nQuit");
+                System.out.println("Check revels the square; Flag marks / unmarks the square, stopping you form reveling it; and Quit ends the game");
 
                 if (!GetError().equals(""))
                 {
@@ -112,9 +121,9 @@ public class Main {
                     continue;
                 }
 
-                parcedInput = InputParsing(inputString);
+                parsedInput = InputParsing(inputString);
 
-                lowerString = parcedInput[0].toLowerCase();
+                lowerString = parsedInput[0].toLowerCase();
                 action = lowerString.charAt(0);
 
                 if(action == 'q')
@@ -123,9 +132,9 @@ public class Main {
 
                     inputString = input.nextLine();
                     lowerString = inputString.toLowerCase();
-                    parcedInput = InputParsing(lowerString);
+                    parsedInput = InputParsing(lowerString);
 
-                    action = parcedInput[0].charAt(0);
+                    action = parsedInput[0].charAt(0);
 
                     if(action == 'y')
                     {
@@ -138,8 +147,8 @@ public class Main {
                 {
                     try
                     {
-                        xCoordinate = Integer.valueOf(parcedInput[1]).intValue();
-                        yCoordinate = Integer.valueOf(parcedInput[2]).intValue();
+                        xCoordinate = Integer.valueOf(parsedInput[1]).intValue();
+                        yCoordinate = Integer.valueOf(parsedInput[2]).intValue();
 
                     }catch (Exception fail)
                     {
@@ -165,15 +174,26 @@ public class Main {
                     }else if(action == 'c')
                     {
                         if (game.CheckFlagged(xCoordinate, yCoordinate))
+                        {
                             SetError("Square flagged so can't be checked\nUse flag to unflag the square");
+                            continue;
+                        }
 
-                        game.Check(xCoordinate,yCoordinate);
+                        if(game.CheckReveled(xCoordinate,yCoordinate))
+                        {
+                            SetError("The square has already been reveled");
+                            continue;
+                        }
+
+                        game.RecursiveRevel(xCoordinate,yCoordinate);
+
                     } else
                     {
                         SetError("Invalid action");
                         continue;
                     }
-                    if (!GetPlaying())
+
+                    if (!GetPlaying() && !GetWin())
                     {
                         game.ForceRevealAll();
                         System.out.println(game.RenderGrid());
@@ -182,7 +202,7 @@ public class Main {
                             System.out.println(GetError());
                             SetError("");
                         }
-                        EndGame(false);
+                        EndGame();
                     }
                 }
             }while (GetPlaying());
@@ -190,8 +210,8 @@ public class Main {
             System.out.println("Would you like to play again\n\"yes\" or \"no\"");
             inputString = input.nextLine();
             lowerString = inputString.toLowerCase();
-            parcedInput = InputParsing(lowerString);
-            action = parcedInput[0].charAt(0);
+            parsedInput = InputParsing(lowerString);
+            action = parsedInput[0].charAt(0);
 
             if (action == 'n')
             {
@@ -268,7 +288,7 @@ public class Main {
 
         parsesList.add(toAdd);
 
-        returnStrings =  new String[parsesList.size()];
+        returnStrings = new String[parsesList.size()];
         counter = 0;
         for (String myStr:parsesList)
         {
@@ -279,18 +299,17 @@ public class Main {
         return returnStrings;
     }
 
-    public static void EndGame(boolean myWin)
+    public static void EndGame()
     {
-        if (myWin)
+        if (GetWin())
         {
-            System.out.println("Congratulations you did it :)");
-
+            System.out.println("\n\033[32mCongratulations you did it :)\033[0;37m\n");
         }
         else
         {
-            _playing = false;
-            System.out.println("You hit a mine");
-            System.out.println("Try agan :(");
+            System.out.println("\n\033[0;31mYou hit a mine");
+            System.out.println("Try agan :(\033[0;37m\n");
         }
+        SetPlaying(false);
     }
 }
