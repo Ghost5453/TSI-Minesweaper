@@ -30,14 +30,9 @@ public class Grid {
 
     public void Check(int myX, int myY)
     {
-        if (grid[myY][myX].GetReveled())
+        if (!grid[myY][myX].GetReveled())
         {
-            System.out.println("This tile has already been reveled");
-        }else {
-            if (grid[myY][myX].GetFlag())
-            {
-                System.out.println("You cannot check flagged tiles");
-            }else
+            if (!grid[myY][myX].GetFlag())
             {
                 RecursiveRevel(myX, myY);
             }
@@ -121,6 +116,17 @@ public class Grid {
     {
         return mines - flagedMines;
     }
+    public void ForceRevealAll()
+    {
+        for(int y = 0; y < ySize; y++)
+        {
+            for(int x = 0; x< xSize; x++)
+            {
+                grid[y][x].ForceRevele();
+            }
+        }
+        RenderGrid();
+    }
 
     private void RecursiveRevel(int myX, int myY)
     {
@@ -132,7 +138,8 @@ public class Grid {
 
         if (grid[myY][myX].GetContents() == -1)
         {
-            Main.SetPlaying(false);
+            Main.EndGame(false);
+            //Main.SetPlaying(false);
         }
 
         if (grid[myY][myX].GetContents() == 0 && !checked)
@@ -194,13 +201,9 @@ public class Grid {
            }
        }
 
-        System.out.println("Found all mines: " + foundAllMins);
-        System.out.println("Found all safe: " + foundAllSafe);
-
        if (foundAllSafe && foundAllMins)
        {
-           Main.SetWin(true);
-           Main.SetPlaying(false);
+           Main.EndGame(true);
        }else
        {
            RenderGrid();
@@ -273,7 +276,6 @@ public class Grid {
                             {
                                 numberGrid[yTest][xTest] += 1;
                             }
-
                         }
                     }
                 }
@@ -297,10 +299,6 @@ public class Grid {
         }
     }
 
-    public int GetScore()
-    {
-        return time;
-    }
 
     public int GetRemainingMines()
     {

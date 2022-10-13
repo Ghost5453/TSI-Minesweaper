@@ -2,7 +2,7 @@ public class GridSquare {
 
     private int contents;
     private boolean flagged, reveled;
-    private char image;
+    private String image;
 
     GridSquare(int myContents){
 
@@ -12,7 +12,7 @@ public class GridSquare {
         UpdateImage();
     }
 
-    public char CheckSquare()
+    public String CheckSquare()
     {
         UpdateImage();
         return this.image;
@@ -20,6 +20,12 @@ public class GridSquare {
 
     public void FlagSquare(){
         flagged = !flagged;
+        UpdateImage();
+    }
+
+    public void ForceRevele()
+    {
+        reveled = true;
         UpdateImage();
     }
 
@@ -38,21 +44,20 @@ public class GridSquare {
         {
             if (contents >= 0 && contents <= 8)
             {
-                image = Character.forDigit(contents, 10);
-
+                image = " " + String.valueOf(contents) + " ";
             } else
             {
 //                Main.EndGame(false);
-                image = '\u00D7';
+                image = "\u00D7";
             }
         }else
         {
             if(flagged)
             {
-                image = '\u22A0';
+                image = "\u22A0";
             }else {
 
-                image = '\u25A0';
+                image = "\u25A0";
 
             }
         }
