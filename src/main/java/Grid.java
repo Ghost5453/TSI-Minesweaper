@@ -1,4 +1,4 @@
-package my.pack;
+import java.util.Random;
 
 public class Grid {
 
@@ -7,10 +7,7 @@ public class Grid {
     private int ySize;
     private int flaggedMines;
 
-    private boolean foundAllMinis;
-    private  boolean foundAllSafe;
-
-    private GridSquare[][] grid;
+    private GridSquare[][] gameGrid;
 
     Grid(int myHeight, int myWidth, int mines){
 
@@ -18,14 +15,14 @@ public class Grid {
         this.ySize = myHeight;
         this.mines = mines;
         AssignGridValues();
-        RenderGrid();
+        DrawGrid();
     }
 
-    public void Flag(int myX, int myY)
+    public void FlagMines(int myX, int myY)
     {
-        grid[myY][myX].FlagSquare();
+        gameGrid[myY][myX].FlagSquare();
 
-        if (grid[myY][myX].GetFlag())
+        if (gameGrid[myY][myX].GetFlag())
         {
             flaggedMines++;
         }
@@ -36,14 +33,17 @@ public class Grid {
         CheckWin();
     }
 
-    public String RenderGrid()
+    public String DrawGrid()
     {
+        String blueColour ="\033[0;36m";
+        String whiteColour = "\033[0;37m";
         String gridStr;
-        gridStr ="\033[0;36m" + "y\n" + "\033[0;37m";
+
+        gridStr = blueColour + "y\n" + whiteColour;
 
         for (int y = ySize - 1; y >= 0; y--)
         {
-            gridStr += "\033[0;36m";
+            gridStr += blueColour;
             if (y < 100 && ySize > 100)
             {
                 gridStr += "0";
@@ -53,7 +53,7 @@ public class Grid {
                 gridStr += "0";
             }
 
-            gridStr = gridStr + y + "\033[0;37m" + " ";
+            gridStr = gridStr + y + whiteColour + " ";
 
             for (int x = 0; x < xSize; x++)
             {
@@ -65,7 +65,7 @@ public class Grid {
                 {
                     gridStr += " ";
                 }
-                gridStr += grid[y][x].CheckSquare();
+                gridStr += gameGrid[y][x].CheckSquare();
                 if (x < xSize - 1)
                 {
                     gridStr += ' ';
@@ -86,7 +86,7 @@ public class Grid {
 
         gridStr += "  ";
 
-        gridStr += "\033[0;36m";
+        gridStr += blueColour;
 
         for (int x = 0; x < xSize; x++)
         {
@@ -102,7 +102,7 @@ public class Grid {
         }
 
         gridStr += "x";
-        gridStr += "\033[0;37m";
+        gridStr += whiteColour;
 
         return gridStr;
     }
@@ -117,13 +117,13 @@ public class Grid {
         {
             for(int x = 0; x< xSize; x++)
             {
-                grid[y][x].ForceRevel();
+                gameGrid[y][x].ForceRevel();
             }
         }
-        RenderGrid();
+        DrawGrid();
     }
 
-    public void RecursiveRevel(int myX, int myY)
+    public void Revel(int myX, int myY)
     {
         int newX;
         int newY;
@@ -132,15 +132,15 @@ public class Grid {
         boolean xInRange;
         boolean checked;
 
-        checked = grid[myY][myX].GetReveled();
-        grid[myY][myX].RevelSquare();
+        checked = gameGrid[myY][myX].GetReveled();
+        gameGrid[myY][myX].RevelSquare();
 
-        if (grid[myY][myX].GetContents() == -1)
+        if (gameGrid[myY][myX].GetContents() == -1)
         {
             Main.SetPlaying(false);
         } else
         {
-            if (grid[myY][myX].GetContents() == 0 && !checked)
+            if (gameGrid[myY][myX].GetContents() == 0 && !checked)
             {
                 for (int dY = -1; dY <= 1; dY++)
                 {
@@ -162,7 +162,7 @@ public class Grid {
                             yInRange = true;
 
                         if (yInRange && xInRange)
-                            RecursiveRevel(newX, newY);
+                            Revel(newX, newY);
                     }
                 }
             }
@@ -172,22 +172,22 @@ public class Grid {
 
     private void CheckWin()
     {
-        foundAllMinis = true;
-        foundAllSafe = true;
+        boolean foundAllMinis = true;
+        boolean foundAllSafe = true;
 
        for (int y = 0; y < ySize; y++)
        {
            for (int x = 0; x < xSize; x++)
            {
-               if (grid[y][x].GetContents() >= 0)
+               if (gameGrid[y][x].GetContents() >= 0)
                {
-                   if (!grid[y][x].GetReveled())
+                   if (!gameGrid[y][x].GetReveled())
                    {
                        foundAllSafe = false;
                    }
                } else
                {
-                   if (!grid[y][x].GetFlag())
+                   if (!gameGrid[y][x].GetFlag())
                    {
                        foundAllMinis = false;
                    }
@@ -197,12 +197,12 @@ public class Grid {
 
        if (foundAllSafe && foundAllMinis)
        {
-           System.out.println(RenderGrid());
+           System.out.println(DrawGrid());
            Main.SetWin(true);
            Main.EndGame();
        }else
        {
-           RenderGrid();
+           DrawGrid();
        }
     }
 
@@ -223,11 +223,12 @@ public class Grid {
 
         while (minesLeft > 0)
         {
+            Random random = new Random();
             int x;
             int y;
 
-            x = (int) (Math.random() * xSize);
-            y = (int) (Math.random() * ySize);
+            x = random.nextInt(xSize);
+            y = random.nextInt(ySize);
 
             if(numberGrid[y][x] == 0)
             {
@@ -246,8 +247,11 @@ public class Grid {
                     {
                         for (int localX = -1; localX <= 1; localX++)
                         {
-                            int yTest, xTest;
-                            boolean yOver =true, xOver = true;
+                            int yTest;
+                            int xTest;
+
+                            boolean yOver =true;
+                            boolean xOver = true;
 
                             if (localY == 0 && localX == 0)
                                 continue;
@@ -284,12 +288,12 @@ public class Grid {
     private void GenerateGrid(int[][] myMineMask)
     {
         System.out.println("");
-        grid = new GridSquare[ySize][xSize];
+        gameGrid = new GridSquare[ySize][xSize];
         for(int y = 0; y < ySize; y++)
         {
             for (int x = 0; x < xSize; x++)
             {
-                grid[y][x] = new GridSquare(myMineMask[y][x]);
+                gameGrid[y][x] = new GridSquare(myMineMask[y][x]);
             }
         }
     }
@@ -311,11 +315,11 @@ public class Grid {
 
     public boolean CheckFlagged(int x, int y)
     {
-        return grid[y][x].GetFlag();
+        return gameGrid[y][x].GetFlag();
     }
 
     public boolean CheckReveled(int x, int y)
     {
-        return  grid[y][x].GetReveled();
+        return  gameGrid[y][x].GetReveled();
     }
 }

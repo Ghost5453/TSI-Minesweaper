@@ -1,5 +1,3 @@
-package my.pack;
-
 public class GridSquare {
 
     private int contents;
@@ -45,13 +43,16 @@ public class GridSquare {
 
     private void UpdateImage()
     {
+        String myStr;
+
         if (reveled)
         {
             if (contents >= 0 && contents <= 8)
             {
                 if(contents > 0)
                 {
-                    image = "\033[0;33m" + String.valueOf(contents) + "\033[0;37m";
+                    myStr = String.valueOf(contents);
+                    image = "\033[0;33m" + myStr + "\033[0;37m";
                 }else
                 {
                     image = String.valueOf(contents);

@@ -1,5 +1,3 @@
-package my.pack;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -124,10 +122,10 @@ public class Main {
                     System.out.println("There are: " + game.GetRemainingMines() + " mines left");
                 }
 
-                output = game.RenderGrid();
+                output = game.DrawGrid();
                 System.out.println(output);
-                System.out.println("List of commands:\nCheck \"X coordinate\" \"Y coordinator\"\nFlag \"X coordinate\" \"Y coordinator\"\nQuit");
-                System.out.println("Check revels the square; Flag marks / unmarks the square, stopping you form reveling it; and Quit ends the game");
+                System.out.println("List of commands:\nCheck \"X coordinate\" \"Y coordinator\"\nFlagMines \"X coordinate\" \"Y coordinator\"\nQuit");
+                System.out.println("Check revels the square; FlagMines marks / unmarks the square, stopping you form reveling it; and Quit ends the game");
 
                 if (!GetError().equals(""))
                 {
@@ -192,7 +190,7 @@ public class Main {
 
                     if (action == 'f')
                     {
-                        game.Flag(xCoordinate,yCoordinate);
+                        game.FlagMines(xCoordinate,yCoordinate);
                     }else if(action == 'c')
                     {
                         if (game.CheckFlagged(xCoordinate, yCoordinate))
@@ -207,7 +205,7 @@ public class Main {
                             continue;
                         }
 
-                        game.RecursiveRevel(xCoordinate,yCoordinate);
+                        game.Revel(xCoordinate,yCoordinate);
 
                     } else
                     {
@@ -218,7 +216,7 @@ public class Main {
                     if (!GetPlaying() && !GetWin())
                     {
                         game.ForceRevealAll();
-                        System.out.println(game.RenderGrid());
+                        System.out.println(game.DrawGrid());
                         if(!GetError().equals(""))
                         {
                             System.out.println(GetError());
@@ -246,6 +244,16 @@ public class Main {
                 System.out.println("\033[31mInvalid input type \"yes\" or \"no\"\033[0;37m");
             }
         }while (inGame);
+    }
+
+    private  static  void InitialSetup()
+    {
+
+    }
+
+    private static void InGame()
+    {
+
     }
 
     public static boolean GetWin()
@@ -309,13 +317,11 @@ public class Main {
         }
 
         parsesList.add(toAdd);
-
         returnStrings = new String[parsesList.size()];
-        counter = 0;
-        for (String myStr:parsesList)
+
+        for (int i = 0; i <parsesList.size(); i++)
         {
-            returnStrings[counter] = parsesList.get(counter);
-            counter++;
+            returnStrings[i] = parsesList.get(i);
         }
 
         return returnStrings;
