@@ -9,7 +9,7 @@ public class Main {
     private static boolean Playing, Win;
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
-        String output, inputString, lowerString;
+        String output, inputString, lowerString, errorMessage;
         char action;
         int height, width, mines, xCoordinate, yCoordinate;
         boolean inGame = true, validInput;
@@ -21,12 +21,21 @@ public class Main {
         Main.SetPlaying(true);
 
         do{
+            errorMessage ="";
             do {
                 validInput = true;
 
                 System.out.println("What difficulty do you want to play:\n((B)eginner, (I)ntermediate, (E)xpert or (C)ustom");
 
                 inputString = input.nextLine();
+
+                if(inputString.equals(""))
+                {
+                    validInput = false;
+                    current = beginner;
+                    continue;
+                }
+
                 parcedInput = InputParsing(inputString);
 
                 lowerString = parcedInput[0].toLowerCase();
@@ -88,9 +97,23 @@ public class Main {
                 System.out.println("There are: " + game.GetRemainingMines() + " left");
                 output = game.RenderGrid();
                 System.out.println(output);
-                System.out.println("List of commands:\nCheck \"X coordinate\" \"Y coordinator\"\nFlag \"X coordinate\" \"Y coordinator\"\nCheck revels the square and Flag makes the square");
+                System.out.println("List of commands:\nCheck \"X coordinate\" \"Y coordinator\"\nFlag \"X coordinate\" \"Y coordinator\"\nQuit \nCheck revels the square, Flag makes the square and Quit ends the game");
+
+                if (!errorMessage.equals(""))
+                {
+                    System.out.println("\n" + errorMessage + "\n");
+                    errorMessage = "";
+                }
 
                 inputString = input.nextLine();
+
+                if(inputString.equals(""))
+                {
+                    errorMessage = "\033[0;31mWright a command\033[0;37m";
+                    continue;
+                }
+
+
                 parcedInput = InputParsing(inputString);
 
                 lowerString = parcedInput[0].toLowerCase();
@@ -122,7 +145,19 @@ public class Main {
 
                     }catch (Exception fail)
                     {
-                        System.out.println("Invalid input");
+                        errorMessage = "\033[0;31mInvalid X or Y input\033[0;37m";
+                        continue;
+                    }
+
+                    if (xCoordinate< 0 || xCoordinate >= game.GetXMax())
+                    {
+                        errorMessage = "\033[0;31mX is out of range\033[0;37m";
+                        continue;
+                    }
+
+                    if(yCoordinate < 0 || yCoordinate >= game.GetYMax())
+                    {
+                        errorMessage = "\033[0;31mY is out of range\033[0;37m";
                         continue;
                     }
 
@@ -134,7 +169,8 @@ public class Main {
                         game.Check(xCoordinate,yCoordinate);
                     } else
                     {
-                        System.out.println("Invalid action");
+                        errorMessage = "\033[0;31mInvalid action\033[0;37m";
+                        continue;
                     }
                     if (!GetPlaying())
                     {
@@ -156,7 +192,7 @@ public class Main {
                 inGame = false;
             } else if (action == 'y')
             {
-
+                SetPlaying(true);
             } else
             {
                 System.out.println("Invalid input type \"yes\" or \"no\"");
@@ -183,7 +219,7 @@ public class Main {
         return Playing;
     }
 
-    public static String @NotNull [] InputParsing (@NotNull String input)
+    public static String [] InputParsing (String input)
     {
         char[] inputCharArray;
         String[] returnStrings;

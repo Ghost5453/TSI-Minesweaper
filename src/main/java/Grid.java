@@ -297,4 +297,14 @@ public class Grid {
     {
         return mines - flaggedMines;
     }
+
+    public int GetXMax()
+    {
+        return xSize;
+    }
+
+    public int GetYMax()
+    {
+        return  ySize;
+    }
 }
