@@ -1,4 +1,5 @@
 import java.util.Random;
+import java.lang.Math;
 
 public class Grid {
 
@@ -87,33 +88,51 @@ public class Grid {
         String blueColour ="\033[0;36m";
         String whiteColour = "\033[0;37m";
         String gridStr;
+        int xPower = 1;
+        int yPower = 1;
+        float xSizeFloat = (float) xSize;
+        float ySizeFloat = (float) ySize;
+
+
+
+        while ((xSizeFloat / Math.pow(10, xPower)) > 1)
+            xPower++;
+
+        while ((ySizeFloat / Math.pow(10, yPower))> 1)
+            yPower++;
+
+        System.out.println("xPower: " + xPower);
+        System.out.println("yPower: " + yPower);
 
         gridStr = blueColour + "y\n" + whiteColour;
 
         for (int y = ySize - 1; y >= 0; y--)
         {
             gridStr += blueColour;
-            if (y < 100 && ySize > 100)
+
+            if (yPower > 1)
             {
-                gridStr += "0";
-            }
-            if (y < 10 && ySize > 10)
-            {
-                gridStr += "0";
+                for (int p = yPower -1; p > 0; p--)
+                {
+                    if (y < Math.pow(10, p))
+                    {
+                        gridStr += "0";
+                    }
+                }
             }
 
             gridStr = gridStr + y + whiteColour + " ";
 
             for (int x = 0; x < xSize; x++)
             {
-                if (xSize > 100)
+                if (xPower > 1)
                 {
-                    gridStr += " ";
+                    for(int p = xPower - 1; p > 0; p--)
+                    {
+                        gridStr += " ";
+                    }
                 }
-                if (xSize > 10)
-                {
-                    gridStr += " ";
-                }
+
                 gridStr += gameGrid[y][x].ShowSquareImage();
                 if (x < xSize - 1)
                 {
@@ -123,14 +142,12 @@ public class Grid {
             gridStr += "\n";
         }
 
-        if (ySize > 100)
+        if (yPower > 1)
         {
-            gridStr += " ";
-        }
-
-        if (ySize > 10)
-        {
-            gridStr += " ";
+            for(int p = yPower; p > 0; p--)
+            {
+                gridStr += " ";
+            }
         }
 
         gridStr += "  ";
@@ -139,14 +156,17 @@ public class Grid {
 
         for (int x = 0; x < xSize; x++)
         {
-            if (x < 100 && xSize > 100)
+            if (xPower > 1)
             {
-                gridStr += "0";
+                for (int p = xPower - 1; p > 0; p--)
+                {
+                    if (x < Math.pow(10, p))
+                    {
+                        gridStr += "0";
+                    }
+                }
             }
-            if (x < 10 && xSize > 10)
-            {
-                gridStr += "0";
-            }
+
             gridStr = gridStr + x + " ";
         }
 
