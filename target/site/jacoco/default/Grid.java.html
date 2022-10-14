@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Grid.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">MavenMinesweeper</a> &gt; <a href="index.source.html" class="el_package">default</a> &gt; <span class="el_source">Grid.java</span></div><h1>Grid.java</h1><pre class="source lang-java linenums">import java.util.Random;
+
+public class Grid {
+
+    private int mines;
+    private int xSize;
+    private int ySize;
+    private int flaggedMines;
+
+    private GridSquare[][] gameGrid;
+
+<span class="fc" id="L12">    Grid(int myHeight, int myWidth, int mines){</span>
+
+<span class="fc" id="L14">        this.xSize = myWidth;</span>
+<span class="fc" id="L15">        this.ySize = myHeight;</span>
+<span class="fc" id="L16">        this.mines = mines;</span>
+<span class="fc" id="L17">        AssignGridValues();</span>
+<span class="fc" id="L18">        DrawGrid();</span>
+<span class="fc" id="L19">    }</span>
+
+    public void FlagMines(int myX, int myY)
+    {
+<span class="nc" id="L23">        gameGrid[myY][myX].FlagSquare();</span>
+
+<span class="nc bnc" id="L25" title="All 2 branches missed.">        if (gameGrid[myY][myX].GetFlag())</span>
+        {
+<span class="nc" id="L27">            flaggedMines++;</span>
+        }
+        else
+        {
+<span class="nc" id="L31">            flaggedMines--;</span>
+        }
+<span class="nc" id="L33">        CheckWin();</span>
+<span class="nc" id="L34">    }</span>
+
+    public String DrawGrid()
+    {
+<span class="fc" id="L38">        String blueColour =&quot;\033[0;36m&quot;;</span>
+<span class="fc" id="L39">        String whiteColour = &quot;\033[0;37m&quot;;</span>
+        String gridStr;
+
+<span class="fc" id="L42">        gridStr = blueColour + &quot;y\n&quot; + whiteColour;</span>
+
+<span class="fc bfc" id="L44" title="All 2 branches covered.">        for (int y = ySize - 1; y &gt;= 0; y--)</span>
+        {
+<span class="fc" id="L46">            gridStr += blueColour;</span>
+<span class="pc bpc" id="L47" title="2 of 4 branches missed.">            if (y &lt; 100 &amp;&amp; ySize &gt; 100)</span>
+            {
+<span class="nc" id="L49">                gridStr += &quot;0&quot;;</span>
+            }
+<span class="pc bpc" id="L51" title="2 of 4 branches missed.">            if (y &lt; 10 &amp;&amp; ySize &gt; 10)</span>
+            {
+<span class="nc" id="L53">                gridStr += &quot;0&quot;;</span>
+            }
+
+<span class="fc" id="L56">            gridStr = gridStr + y + whiteColour + &quot; &quot;;</span>
+
+<span class="fc bfc" id="L58" title="All 2 branches covered.">            for (int x = 0; x &lt; xSize; x++)</span>
+            {
+<span class="pc bpc" id="L60" title="1 of 2 branches missed.">                if (xSize &gt; 100)</span>
+                {
+<span class="nc" id="L62">                    gridStr += &quot; &quot;;</span>
+                }
+<span class="pc bpc" id="L64" title="1 of 2 branches missed.">                if (xSize &gt; 10)</span>
+                {
+<span class="nc" id="L66">                    gridStr += &quot; &quot;;</span>
+                }
+<span class="fc" id="L68">                gridStr += gameGrid[y][x].CheckSquare();</span>
+<span class="fc bfc" id="L69" title="All 2 branches covered.">                if (x &lt; xSize - 1)</span>
+                {
+<span class="fc" id="L71">                    gridStr += ' ';</span>
+                }
+            }
+<span class="fc" id="L74">            gridStr += &quot;\n&quot;;</span>
+        }
+
+<span class="pc bpc" id="L77" title="1 of 2 branches missed.">        if (ySize &gt; 100)</span>
+        {
+<span class="nc" id="L79">            gridStr += &quot; &quot;;</span>
+        }
+
+<span class="pc bpc" id="L82" title="1 of 2 branches missed.">        if (ySize &gt; 10)</span>
+        {
+<span class="nc" id="L84">            gridStr += &quot; &quot;;</span>
+        }
+
+<span class="fc" id="L87">        gridStr += &quot;  &quot;;</span>
+
+<span class="fc" id="L89">        gridStr += blueColour;</span>
+
+<span class="fc bfc" id="L91" title="All 2 branches covered.">        for (int x = 0; x &lt; xSize; x++)</span>
+        {
+<span class="pc bpc" id="L93" title="2 of 4 branches missed.">            if (x &lt; 100 &amp;&amp; xSize &gt; 100)</span>
+            {
+<span class="nc" id="L95">                gridStr += &quot;0&quot;;</span>
+            }
+<span class="pc bpc" id="L97" title="2 of 4 branches missed.">            if (x &lt; 10 &amp;&amp; xSize &gt; 10)</span>
+            {
+<span class="nc" id="L99">                gridStr += &quot;0&quot;;</span>
+            }
+<span class="fc" id="L101">            gridStr = gridStr + x + &quot; &quot;;</span>
+        }
+
+<span class="fc" id="L104">        gridStr += &quot;x&quot;;</span>
+<span class="fc" id="L105">        gridStr += whiteColour;</span>
+
+<span class="fc" id="L107">        return gridStr;</span>
+    }
+
+    public int MinesLeft()
+    {
+<span class="nc" id="L112">        return mines - flaggedMines;</span>
+    }
+    public void ForceRevealAll()
+    {
+<span class="nc bnc" id="L116" title="All 2 branches missed.">        for(int y = 0; y &lt; ySize; y++)</span>
+        {
+<span class="nc bnc" id="L118" title="All 2 branches missed.">            for(int x = 0; x&lt; xSize; x++)</span>
+            {
+<span class="nc" id="L120">                gameGrid[y][x].ForceRevel();</span>
+            }
+        }
+<span class="nc" id="L123">        DrawGrid();</span>
+<span class="nc" id="L124">    }</span>
+
+    public void Revel(int myX, int myY)
+    {
+        int newX;
+        int newY;
+
+        boolean yInRange;
+        boolean xInRange;
+        boolean checked;
+
+<span class="nc" id="L135">        checked = gameGrid[myY][myX].GetReveled();</span>
+<span class="nc" id="L136">        gameGrid[myY][myX].RevelSquare();</span>
+
+<span class="nc bnc" id="L138" title="All 2 branches missed.">        if (gameGrid[myY][myX].GetContents() == -1)</span>
+        {
+<span class="nc" id="L140">            Main.SetPlaying(false);</span>
+        } else
+        {
+<span class="nc bnc" id="L143" title="All 4 branches missed.">            if (gameGrid[myY][myX].GetContents() == 0 &amp;&amp; !checked)</span>
+            {
+<span class="nc bnc" id="L145" title="All 2 branches missed.">                for (int dY = -1; dY &lt;= 1; dY++)</span>
+                {
+<span class="nc" id="L147">                    newY = dY + myY;</span>
+<span class="nc bnc" id="L148" title="All 2 branches missed.">                    for (int dX = -1; dX &lt;= 1; dX++)</span>
+                    {
+<span class="nc" id="L150">                        xInRange = false;</span>
+<span class="nc" id="L151">                        yInRange = false;</span>
+
+<span class="nc" id="L153">                        newX = dX + myX;</span>
+
+<span class="nc bnc" id="L155" title="All 4 branches missed.">                        if (newX == myX &amp;&amp; newY == myY)</span>
+<span class="nc" id="L156">                            continue;</span>
+
+<span class="nc bnc" id="L158" title="All 4 branches missed.">                        if (newX &gt;= 0 &amp;&amp; newX &lt; xSize)</span>
+<span class="nc" id="L159">                            xInRange = true;</span>
+
+<span class="nc bnc" id="L161" title="All 4 branches missed.">                        if (newY &gt;= 0 &amp;&amp; newY &lt; ySize)</span>
+<span class="nc" id="L162">                            yInRange = true;</span>
+
+<span class="nc bnc" id="L164" title="All 4 branches missed.">                        if (yInRange &amp;&amp; xInRange)</span>
+<span class="nc" id="L165">                            Revel(newX, newY);</span>
+                    }
+                }
+            }
+        }
+<span class="nc" id="L170">        CheckWin();</span>
+<span class="nc" id="L171">    }</span>
+
+    private void CheckWin()
+    {
+<span class="nc" id="L175">        boolean foundAllMinis = true;</span>
+<span class="nc" id="L176">        boolean foundAllSafe = true;</span>
+
+<span class="nc bnc" id="L178" title="All 2 branches missed.">       for (int y = 0; y &lt; ySize; y++)</span>
+       {
+<span class="nc bnc" id="L180" title="All 2 branches missed.">           for (int x = 0; x &lt; xSize; x++)</span>
+           {
+<span class="nc bnc" id="L182" title="All 2 branches missed.">               if (gameGrid[y][x].GetContents() &gt;= 0)</span>
+               {
+<span class="nc bnc" id="L184" title="All 2 branches missed.">                   if (!gameGrid[y][x].GetReveled())</span>
+                   {
+<span class="nc" id="L186">                       foundAllSafe = false;</span>
+                   }
+               } else
+               {
+<span class="nc bnc" id="L190" title="All 2 branches missed.">                   if (!gameGrid[y][x].GetFlag())</span>
+                   {
+<span class="nc" id="L192">                       foundAllMinis = false;</span>
+                   }
+               }
+           }
+       }
+
+<span class="nc bnc" id="L198" title="All 4 branches missed.">       if (foundAllSafe &amp;&amp; foundAllMinis)</span>
+       {
+<span class="nc" id="L200">           System.out.println(DrawGrid());</span>
+<span class="nc" id="L201">           Main.SetWin(true);</span>
+<span class="nc" id="L202">           Main.EndGame();</span>
+       }else
+       {
+<span class="nc" id="L205">           DrawGrid();</span>
+       }
+<span class="nc" id="L207">    }</span>
+
+    private void AssignGridValues()
+    {
+<span class="fc" id="L211">        int[][] numberGrid = new int[ySize][xSize];</span>
+        int minesLeft;
+
+<span class="fc" id="L214">        minesLeft = mines;</span>
+
+<span class="fc bfc" id="L216" title="All 2 branches covered.">        for (int y = 0; y &lt; ySize; y++ )</span>
+        {
+<span class="fc bfc" id="L218" title="All 2 branches covered.">            for (int x = 0; x &lt; xSize; x++)</span>
+            {
+<span class="fc" id="L220">                numberGrid[y][x] = 0;</span>
+            }
+        }
+
+<span class="fc bfc" id="L224" title="All 2 branches covered.">        while (minesLeft &gt; 0)</span>
+        {
+<span class="fc" id="L226">            Random random = new Random();</span>
+            int x;
+            int y;
+
+<span class="fc" id="L230">            x = random.nextInt(xSize);</span>
+<span class="fc" id="L231">            y = random.nextInt(ySize);</span>
+
+<span class="fc bfc" id="L233" title="All 2 branches covered.">            if(numberGrid[y][x] == 0)</span>
+            {
+<span class="fc" id="L235">                numberGrid[y][x] = -1;</span>
+<span class="fc" id="L236">                minesLeft--;</span>
+            }
+<span class="fc" id="L238">        }</span>
+
+<span class="fc bfc" id="L240" title="All 2 branches covered.">        for (int y = 0; y &lt; ySize; y++)</span>
+        {
+<span class="fc bfc" id="L242" title="All 2 branches covered.">            for (int x = 0; x &lt; xSize; x++)</span>
+            {
+<span class="fc bfc" id="L244" title="All 2 branches covered.">                if (numberGrid[y][x] == -1)</span>
+                {
+<span class="fc bfc" id="L246" title="All 2 branches covered.">                    for (int localY = -1; localY &lt;= 1; localY++)</span>
+                    {
+<span class="fc bfc" id="L248" title="All 2 branches covered.">                        for (int localX = -1; localX &lt;= 1; localX++)</span>
+                        {
+                            int yTest;
+                            int xTest;
+
+<span class="fc" id="L253">                            boolean yOver =true;</span>
+<span class="fc" id="L254">                            boolean xOver = true;</span>
+
+<span class="fc bfc" id="L256" title="All 4 branches covered.">                            if (localY == 0 &amp;&amp; localX == 0)</span>
+<span class="fc" id="L257">                                continue;</span>
+
+<span class="fc" id="L259">                            yTest = localY + y;</span>
+<span class="fc" id="L260">                            xTest = localX + x;</span>
+
+<span class="fc bfc" id="L262" title="All 4 branches covered.">                            if (yTest &lt; ySize &amp;&amp; yTest &gt;= 0)</span>
+                            {
+<span class="fc" id="L264">                                yOver = false;</span>
+                            }
+
+<span class="fc bfc" id="L267" title="All 4 branches covered.">                            if (xTest &lt; xSize &amp;&amp; xTest &gt;=0)</span>
+                            {
+<span class="fc" id="L269">                                xOver = false;</span>
+
+                            }
+
+<span class="fc bfc" id="L273" title="All 4 branches covered.">                            if (xOver || yOver)</span>
+<span class="fc" id="L274">                                continue;</span>
+
+<span class="fc bfc" id="L276" title="All 2 branches covered.">                            if (numberGrid[yTest][xTest] &gt;= 0)</span>
+                            {
+<span class="fc" id="L278">                                numberGrid[yTest][xTest] += 1;</span>
+                            }
+                        }
+                    }
+                }
+            }
+        }
+<span class="fc" id="L285">        GenerateGrid(numberGrid);</span>
+<span class="fc" id="L286">    }</span>
+
+    private void GenerateGrid(int[][] myMineMask)
+    {
+<span class="fc" id="L290">        System.out.println(&quot;&quot;);</span>
+<span class="fc" id="L291">        gameGrid = new GridSquare[ySize][xSize];</span>
+<span class="fc bfc" id="L292" title="All 2 branches covered.">        for(int y = 0; y &lt; ySize; y++)</span>
+        {
+<span class="fc bfc" id="L294" title="All 2 branches covered.">            for (int x = 0; x &lt; xSize; x++)</span>
+            {
+<span class="fc" id="L296">                gameGrid[y][x] = new GridSquare(myMineMask[y][x]);</span>
+            }
+        }
+<span class="fc" id="L299">    }</span>
+
+    public int GetRemainingMines()
+    {
+<span class="nc" id="L303">        return mines - flaggedMines;</span>
+    }
+
+    public int GetXMax()
+    {
+<span class="nc" id="L308">        return xSize;</span>
+    }
+
+    public int GetYMax()
+    {
+<span class="nc" id="L313">        return  ySize;</span>
+    }
+
+    public boolean CheckFlagged(int x, int y)
+    {
+<span class="nc" id="L318">        return gameGrid[y][x].GetFlag();</span>
+    }
+
+    public boolean CheckReveled(int x, int y)
+    {
+<span class="nc" id="L323">        return  gameGrid[y][x].GetReveled();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

@@ -1,0 +1,344 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Main.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">MavenMinesweeper</a> &gt; <a href="index.source.html" class="el_package">default</a> &gt; <span class="el_source">Main.java</span></div><h1>Main.java</h1><pre class="source lang-java linenums">import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+<span class="nc" id="L5">public class Main {</span>
+
+    public static void main(String[] args) {
+<span class="nc" id="L8">        Scanner input = new Scanner(System.in);</span>
+
+        String output;
+        String inputString;
+        String lowerString;
+
+        String[] parsedInput;
+
+        char action;
+
+        int height;
+        int width;
+        int mines;
+        int xCoordinate;
+        int yCoordinate;
+
+<span class="nc" id="L24">        boolean inGame = true;</span>
+        boolean validInput;
+
+
+        Grid game;
+
+<span class="nc" id="L30">        Mode beginner = new Mode(9, 9, 10);</span>
+<span class="nc" id="L31">        Mode intermediate = new Mode(16, 16, 40);</span>
+<span class="nc" id="L32">        Mode expert = new Mode(30, 16, 99);</span>
+        Mode current;
+
+<span class="nc" id="L35">        Main.SetPlaying(true);</span>
+
+        do{
+<span class="nc" id="L38">            SetError(&quot;&quot;);</span>
+            do {
+<span class="nc" id="L40">                validInput = true;</span>
+
+<span class="nc" id="L42">                System.out.println(&quot;What difficulty do you want to play:\n((B)eginner, (I)ntermediate, (E)xpert or (C)ustom&quot;);</span>
+
+<span class="nc" id="L44">                inputString = input.nextLine();</span>
+
+<span class="nc bnc" id="L46" title="All 2 branches missed.">                if(inputString.equals(&quot;&quot;))</span>
+                {
+<span class="nc" id="L48">                    validInput = false;</span>
+<span class="nc" id="L49">                    current = beginner;</span>
+<span class="nc" id="L50">                    continue;</span>
+                }
+
+<span class="nc" id="L53">                parsedInput = InputParsing(inputString);</span>
+
+<span class="nc" id="L55">                lowerString = parsedInput[0].toLowerCase();</span>
+<span class="nc" id="L56">                action = lowerString.charAt(0);</span>
+
+<span class="nc bnc" id="L58" title="All 2 branches missed.">                if (action == 'b')</span>
+                {
+<span class="nc" id="L60">                    current = beginner;</span>
+<span class="nc bnc" id="L61" title="All 2 branches missed.">                } else if(action == 'i')</span>
+                {
+<span class="nc" id="L63">                    current = intermediate;</span>
+<span class="nc bnc" id="L64" title="All 2 branches missed.">                } else if(action == 'e')</span>
+                {
+<span class="nc" id="L66">                    current = expert;</span>
+<span class="nc bnc" id="L67" title="All 2 branches missed.">                } else if(action == 'c')</span>
+                {
+<span class="nc" id="L69">                    System.out.println(&quot;What format do you want to use\n(type in the form: \&quot;height\&quot; \&quot;width\&quot; \&quot;mines\&quot;)&quot;);</span>
+<span class="nc" id="L70">                    inputString = input.nextLine();</span>
+<span class="nc" id="L71">                    parsedInput = InputParsing(inputString);</span>
+
+                    try {
+<span class="nc" id="L74">                        height = Integer.valueOf(parsedInput[0]).intValue();</span>
+<span class="nc" id="L75">                        width = Integer.valueOf(parsedInput[1]).intValue();</span>
+<span class="nc" id="L76">                        mines = Integer.valueOf(parsedInput[2]).intValue();</span>
+
+<span class="nc bnc" id="L78" title="All 2 branches missed.">                        if (mines &gt;= (height * width))</span>
+                        {
+                            int newMines;
+<span class="nc" id="L81">                            System.out.println(&quot;\033[0;31mToo many mines&quot;);</span>
+<span class="nc" id="L82">                            newMines = (int)((height*width) / 4.85f);</span>
+<span class="nc" id="L83">                            System.out.println(&quot;Will use: &quot; + newMines + &quot; mines\033[0;37m&quot;);</span>
+<span class="nc" id="L84">                            current = new Mode(height, width, newMines);</span>
+<span class="nc" id="L85">                        }</span>
+                        else
+                        {
+<span class="nc" id="L88">                            current = new Mode(height, width, mines);</span>
+                        }
+
+<span class="nc" id="L91">                    } catch (Exception fail)</span>
+                    {
+<span class="nc" id="L93">                        System.out.println(&quot;\033[0;31mInvalid input\033[0;37m&quot;);</span>
+<span class="nc" id="L94">                        validInput = false;</span>
+<span class="nc" id="L95">                        current = intermediate;</span>
+<span class="nc" id="L96">                    }</span>
+                } else
+                {
+<span class="nc" id="L99">                    System.out.println(&quot;\033[0;31mInvalid input\033[0;37m&quot;);</span>
+<span class="nc" id="L100">                    validInput = false;</span>
+<span class="nc" id="L101">                    current = intermediate;</span>
+                }
+
+<span class="nc bnc" id="L104" title="All 2 branches missed.">            }while (!validInput);</span>
+
+            // In game
+
+<span class="nc" id="L108">            game = new Grid(current.height, current.width, current.mines);</span>
+
+            do {
+<span class="nc bnc" id="L111" title="All 4 branches missed.">                if (game.GetRemainingMines() == 1 || game.GetRemainingMines() == -1 )</span>
+                {
+<span class="nc" id="L113">                    System.out.println(&quot;There are: &quot; + game.GetRemainingMines() + &quot; mine left&quot;);</span>
+                }
+                else
+                {
+<span class="nc" id="L117">                    System.out.println(&quot;There are: &quot; + game.GetRemainingMines() + &quot; mines left&quot;);</span>
+                }
+
+<span class="nc" id="L120">                output = game.DrawGrid();</span>
+<span class="nc" id="L121">                System.out.println(output);</span>
+<span class="nc" id="L122">                System.out.println(&quot;List of commands:\nCheck \&quot;X coordinate\&quot; \&quot;Y coordinator\&quot;\nFlagMines \&quot;X coordinate\&quot; \&quot;Y coordinator\&quot;\nQuit&quot;);</span>
+<span class="nc" id="L123">                System.out.println(&quot;Check revels the square; FlagMines marks / unmarks the square, stopping you form reveling it; and Quit ends the game&quot;);</span>
+
+<span class="nc bnc" id="L125" title="All 2 branches missed.">                if (!GetError().equals(&quot;&quot;))</span>
+                {
+<span class="nc" id="L127">                    System.out.println(GetError());</span>
+<span class="nc" id="L128">                    SetError(&quot;&quot;);</span>
+                }
+
+<span class="nc" id="L131">                inputString = input.nextLine();</span>
+
+<span class="nc bnc" id="L133" title="All 2 branches missed.">                if(inputString.equals(&quot;&quot;))</span>
+                {
+<span class="nc" id="L135">                    SetError(&quot;Wright a command&quot;);</span>
+<span class="nc" id="L136">                    continue;</span>
+                }
+
+<span class="nc" id="L139">                parsedInput = InputParsing(inputString);</span>
+
+<span class="nc" id="L141">                lowerString = parsedInput[0].toLowerCase();</span>
+<span class="nc" id="L142">                action = lowerString.charAt(0);</span>
+
+<span class="nc bnc" id="L144" title="All 2 branches missed.">                if(action == 'q')</span>
+                {
+<span class="nc" id="L146">                    System.out.println(&quot;Do you want to quit\n\&quot;yes\&quot; or \&quot;no\&quot;&quot;);</span>
+
+<span class="nc" id="L148">                    inputString = input.nextLine();</span>
+<span class="nc" id="L149">                    lowerString = inputString.toLowerCase();</span>
+<span class="nc" id="L150">                    parsedInput = InputParsing(lowerString);</span>
+
+<span class="nc" id="L152">                    action = parsedInput[0].charAt(0);</span>
+
+<span class="nc bnc" id="L154" title="All 2 branches missed.">                    if(action == 'y')</span>
+                    {
+<span class="nc" id="L156">                        SetPlaying(false);</span>
+                    }else
+                    {
+<span class="nc" id="L159">                        System.out.println(&quot;Continuing&quot;);</span>
+                    }
+                }else
+                {
+                    try
+                    {
+<span class="nc" id="L165">                        xCoordinate = Integer.valueOf(parsedInput[1]).intValue();</span>
+<span class="nc" id="L166">                        yCoordinate = Integer.valueOf(parsedInput[2]).intValue();</span>
+
+<span class="nc" id="L168">                    }catch (Exception fail)</span>
+                    {
+<span class="nc" id="L170">                        SetError(&quot;Invalid X or Y input&quot;);</span>
+<span class="nc" id="L171">                        continue;</span>
+<span class="nc" id="L172">                    }</span>
+
+<span class="nc bnc" id="L174" title="All 4 branches missed.">                    if (xCoordinate&lt; 0 || xCoordinate &gt;= game.GetXMax())</span>
+                    {
+<span class="nc" id="L176">                        SetError(&quot;X is out of range&quot;);</span>
+<span class="nc" id="L177">                        continue;</span>
+                    }
+
+<span class="nc bnc" id="L180" title="All 4 branches missed.">                    if(yCoordinate &lt; 0 || yCoordinate &gt;= game.GetYMax())</span>
+                    {
+<span class="nc" id="L182">                        SetError(&quot;Y is out of range&quot;);</span>
+<span class="nc" id="L183">                        continue;</span>
+                    }
+
+<span class="nc bnc" id="L186" title="All 2 branches missed.">                    if (action == 'f')</span>
+                    {
+<span class="nc" id="L188">                        game.FlagMines(xCoordinate,yCoordinate);</span>
+<span class="nc bnc" id="L189" title="All 2 branches missed.">                    }else if(action == 'c')</span>
+                    {
+<span class="nc bnc" id="L191" title="All 2 branches missed.">                        if (game.CheckFlagged(xCoordinate, yCoordinate))</span>
+                        {
+<span class="nc" id="L193">                            SetError(&quot;Square flagged so can't be checked\nUse flag to unflag the square&quot;);</span>
+<span class="nc" id="L194">                            continue;</span>
+                        }
+
+<span class="nc bnc" id="L197" title="All 2 branches missed.">                        if(game.CheckReveled(xCoordinate,yCoordinate))</span>
+                        {
+<span class="nc" id="L199">                            SetError(&quot;The square has already been reveled&quot;);</span>
+<span class="nc" id="L200">                            continue;</span>
+                        }
+
+<span class="nc" id="L203">                        game.Revel(xCoordinate,yCoordinate);</span>
+
+                    } else
+                    {
+<span class="nc" id="L207">                        SetError(&quot;Invalid action&quot;);</span>
+<span class="nc" id="L208">                        continue;</span>
+                    }
+
+<span class="nc bnc" id="L211" title="All 4 branches missed.">                    if (!GetPlaying() &amp;&amp; !GetWin())</span>
+                    {
+<span class="nc" id="L213">                        game.ForceRevealAll();</span>
+<span class="nc" id="L214">                        System.out.println(game.DrawGrid());</span>
+<span class="nc bnc" id="L215" title="All 2 branches missed.">                        if(!GetError().equals(&quot;&quot;))</span>
+                        {
+<span class="nc" id="L217">                            System.out.println(GetError());</span>
+<span class="nc" id="L218">                            SetError(&quot;&quot;);</span>
+                        }
+<span class="nc" id="L220">                        EndGame();</span>
+                    }
+                }
+<span class="nc bnc" id="L223" title="All 2 branches missed.">            }while (GetPlaying());</span>
+
+<span class="nc" id="L225">            System.out.println(&quot;Would you like to play again\n\&quot;yes\&quot; or \&quot;no\&quot;&quot;);</span>
+<span class="nc" id="L226">            inputString = input.nextLine();</span>
+<span class="nc" id="L227">            lowerString = inputString.toLowerCase();</span>
+<span class="nc" id="L228">            parsedInput = InputParsing(lowerString);</span>
+<span class="nc" id="L229">            action = parsedInput[0].charAt(0);</span>
+
+<span class="nc bnc" id="L231" title="All 2 branches missed.">            if (action == 'n')</span>
+            {
+<span class="nc" id="L233">                inGame = false;</span>
+<span class="nc bnc" id="L234" title="All 2 branches missed.">            } else if (action == 'y')</span>
+            {
+<span class="nc" id="L236">                SetPlaying(true);</span>
+            } else
+            {
+<span class="nc" id="L239">                System.out.println(&quot;\033[31mInvalid input type \&quot;yes\&quot; or \&quot;no\&quot;\033[0;37m&quot;);</span>
+            }
+<span class="nc bnc" id="L241" title="All 2 branches missed.">        }while (inGame);</span>
+<span class="nc" id="L242">    }</span>
+
+    private static boolean _playing;
+    private static boolean _win;
+
+    private static String _errorMsg;
+
+    private  static  void InitialSetup()
+    {
+
+<span class="nc" id="L252">    }</span>
+
+    private static void InGame()
+    {
+
+<span class="nc" id="L257">    }</span>
+
+    public static boolean GetWin()
+    {
+<span class="nc" id="L261">        return _win;</span>
+    }
+
+    public static void SetWin(boolean myBool)
+    {
+<span class="nc" id="L266">        _win = myBool;</span>
+<span class="nc" id="L267">    }</span>
+
+    public static void SetError(String myError)
+    {
+<span class="nc bnc" id="L271" title="All 2 branches missed.">        if (myError.equals(&quot;&quot;))</span>
+        {
+<span class="nc" id="L273">            _errorMsg = &quot;&quot;;</span>
+        }else
+        {
+<span class="nc" id="L276">            _errorMsg = &quot;\n\033[0;31m&quot; + myError + &quot;\033[0;37m\n&quot;;</span>
+        }
+<span class="nc" id="L278">    }</span>
+
+    public static String GetError()
+    {
+<span class="nc" id="L282">        return _errorMsg;</span>
+    }
+
+    public static void SetPlaying (boolean myBool)
+    {
+<span class="nc" id="L287">        _playing = myBool;</span>
+<span class="nc" id="L288">    }</span>
+    public static boolean GetPlaying()
+    {
+<span class="nc" id="L291">        return _playing;</span>
+    }
+
+    public static String [] InputParsing (String input)
+    {
+        char[] inputCharArray;
+        String[] returnStrings;
+<span class="nc" id="L298">        String toAdd = &quot;&quot;;</span>
+        int counter;
+<span class="nc" id="L300">        List&lt;String&gt; parsesList = new ArrayList&lt;&gt;();</span>
+
+<span class="nc" id="L302">        inputCharArray = input.toCharArray();</span>
+
+<span class="nc bnc" id="L304" title="All 2 branches missed.">        for (char myChar:inputCharArray) {</span>
+
+<span class="nc bnc" id="L306" title="All 2 branches missed.">            if (myChar == ' ')</span>
+            {
+<span class="nc bnc" id="L308" title="All 2 branches missed.">                if (toAdd != &quot;&quot;)</span>
+                {
+<span class="nc" id="L310">                    parsesList.add(toAdd);</span>
+<span class="nc" id="L311">                    toAdd = &quot;&quot;;</span>
+                }
+            } else
+            {
+<span class="nc" id="L315">                toAdd += myChar;</span>
+            }
+        }
+
+<span class="nc" id="L319">        parsesList.add(toAdd);</span>
+<span class="nc" id="L320">        returnStrings = new String[parsesList.size()];</span>
+
+<span class="nc bnc" id="L322" title="All 2 branches missed.">        for (int i = 0; i &lt;parsesList.size(); i++)</span>
+        {
+<span class="nc" id="L324">            returnStrings[i] = parsesList.get(i);</span>
+        }
+
+<span class="nc" id="L327">        return returnStrings;</span>
+    }
+
+    public static void EndGame()
+    {
+<span class="nc bnc" id="L332" title="All 2 branches missed.">        if (GetWin())</span>
+        {
+<span class="nc" id="L334">            System.out.println(&quot;\n\033[32mCongratulations you did it :)\033[0;37m\n&quot;);</span>
+        }
+        else
+        {
+<span class="nc" id="L338">            System.out.println(&quot;\n\033[0;31mYou hit a mine&quot;);</span>
+<span class="nc" id="L339">            System.out.println(&quot;Try agan :(\033[0;37m\n&quot;);</span>
+        }
+<span class="nc" id="L341">        SetPlaying(false);</span>
+<span class="nc" id="L342">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>
