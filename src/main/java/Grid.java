@@ -65,7 +65,7 @@ public class Grid {
                 {
                     gridStr += " ";
                 }
-                gridStr += gameGrid[y][x].CheckSquare();
+                gridStr += gameGrid[y][x].ShowSquareImage();
                 if (x < xSize - 1)
                 {
                     gridStr += ' ';

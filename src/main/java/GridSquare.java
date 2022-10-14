@@ -36,13 +36,12 @@ public class GridSquare {
     public void ForceRevel()
     {
         reveled = true;
-        flagged = false;
         UpdateImage();
     }
     //endregion
 
     //region Outputs
-    public String CheckSquare()
+    public String ShowSquareImage()
     {
         UpdateImage();
         return this.image;
@@ -77,7 +76,6 @@ public class GridSquare {
                 if(contents > 0)
                 {
                     String myStr;
-
                     myStr = String.valueOf(contents);
                     image = "\033[0;33m" + myStr + "\033[0;37m";
                 }else
@@ -86,7 +84,13 @@ public class GridSquare {
                 }
             } else
             {
-                image = "\033[0;31m\u00D7\033[0;37m";
+                if (flagged)
+                {
+                    image = "\033[0;32m\u00D7\033[0;37m";
+                }else
+                {
+                    image = "\033[0;31m\u00D7\033[0;37m";
+                }
             }
         }else
         {

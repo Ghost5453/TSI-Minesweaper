@@ -65,7 +65,7 @@ public class Grid {
                 {
 <span class="nc" id="L66">                    gridStr += &quot; &quot;;</span>
                 }
-<span class="fc" id="L68">                gridStr += gameGrid[y][x].CheckSquare();</span>
+<span class="fc" id="L68">                gridStr += gameGrid[y][x].ShowSquareImage();</span>
 <span class="fc bfc" id="L69" title="All 2 branches covered.">                if (x &lt; xSize - 1)</span>
                 {
 <span class="fc" id="L71">                    gridStr += ' ';</span>
@@ -264,7 +264,7 @@ public class Grid {
 <span class="fc" id="L264">                                yOver = false;</span>
                             }
 
-<span class="fc bfc" id="L267" title="All 4 branches covered.">                            if (xTest &lt; xSize &amp;&amp; xTest &gt;=0)</span>
+<span class="pc bpc" id="L267" title="1 of 4 branches missed.">                            if (xTest &lt; xSize &amp;&amp; xTest &gt;=0)</span>
                             {
 <span class="fc" id="L269">                                xOver = false;</span>
 

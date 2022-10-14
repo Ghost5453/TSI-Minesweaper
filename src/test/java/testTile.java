@@ -15,7 +15,7 @@ public class testTile {
     }
 
     @Test
-    public void testCheckSquareTest()
+    public void testRevelSquare()
     {
         testTile = new GridSquare(testContens);
 
@@ -38,7 +38,7 @@ public class testTile {
     }
 
     @Test
-    public void testFlagCheckSequence()
+    public void testFlagRevelSequence()
     {
         testTile = new GridSquare(testContens);
 
@@ -66,11 +66,10 @@ public class testTile {
         testTile.ForceRevel();
 
         Assertions.assertEquals(true, testTile.GetReveled(), "The square as not been reveled");
-        Assertions.assertEquals(false, testTile.GetFlag(), "The tile is still flagged");
     }
 
     @Test
-    public void testRevele()
+    public void testShowSquareImage()
     {
         for (int i = -1; i <= 9; i++)
         {
@@ -78,13 +77,13 @@ public class testTile {
             System.out.println("\ni: " + i);
             System.out.println("Unflaged, Unreveled");
 
-            Assertions.assertEquals("\u25A0", testTile.CheckSquare(), "The squarer is not showing the correct symbol or assert doesn't work with unicode characters");
-            System.out.println(testTile.CheckSquare());
+            Assertions.assertEquals("\u25A0", testTile.ShowSquareImage(), "The squarer is not showing the correct symbol or assert doesn't work with unicode characters");
+            System.out.println(testTile.ShowSquareImage());
 
             System.out.println("Flaged, Unreveled");
             testTile.FlagSquare();
-            Assertions.assertEquals("\033[0;31m\u22A0\033[0;37m", testTile.CheckSquare());
-            System.out.println(testTile.CheckSquare());
+            Assertions.assertEquals("\033[0;31m\u22A0\033[0;37m", testTile.ShowSquareImage());
+            System.out.println(testTile.ShowSquareImage());
 
             testTile.FlagSquare();
             testTile.RevelSquare();
@@ -93,21 +92,70 @@ public class testTile {
             if(i < 0)
             {
 
-                Assertions.assertEquals("\033[0;31m\u00D7\033[0;37m", testTile.CheckSquare(), "Mine not displaying correctly");
+                Assertions.assertEquals("\033[0;31m\u00D7\033[0;37m", testTile.ShowSquareImage(), "Mine not displaying correctly");
 
             } else if(i == 0)
             {
 
-                Assertions.assertEquals("0",testTile.CheckSquare(), "Blank Not displaying");
+                Assertions.assertEquals("0",testTile.ShowSquareImage(), "Blank Not displaying");
 
             }else
             {
                 String testStr;
                 testStr = "\033[0;33m" + String.valueOf(i) + "\033[0;37m";
-                Assertions.assertEquals(testStr, testTile.CheckSquare(),"Numbers not displaying correctly for " + i);
+                Assertions.assertEquals(testStr, testTile.ShowSquareImage(),"Numbers not displaying correctly for " + i);
             }
-            System.out.println(testTile.CheckSquare());
+            System.out.println(testTile.ShowSquareImage());
 
+        }
+    }
+
+    @Test
+    public void testShowForcedReveledImagesMines()
+    {
+        testTile = new GridSquare(-1);
+
+        testTile.ForceRevel();
+        Assertions.assertEquals("\033[0;31m\u00D7\033[0;37m", testTile.ShowSquareImage(), "The mine tile doesn't display correctly when unflagged");
+        System.out.println("Not flagged: " + testTile.ShowSquareImage());
+
+        testTile = new GridSquare(-1);
+        testTile.FlagSquare();
+        testTile.ForceRevel();
+        Assertions.assertEquals("\033[0;32m\u00D7\033[0;37m", testTile.ShowSquareImage(), "The mine tile doesn't display correctly when flagged ");
+        System.out.println("Flagged: " + testTile.ShowSquareImage());
+    }
+
+    @Test
+    public void testShowForcedReveledImagesNumbers()
+    {
+        String testString = "";
+        for (int i = 0; i < 10; i++)
+        {
+            testTile = new GridSquare(i);
+            testTile.ForceRevel();
+            if (i == 0)
+            {
+                Assertions.assertEquals(String.valueOf(i), testTile.ShowSquareImage(), "unflagged " + i + " tile not displaying correctly for force revel");
+            }else
+            {
+                testString = "\033[0;33m" + String.valueOf(i) + "\033[0;37m";
+                Assertions.assertEquals(testString, testTile.ShowSquareImage(), "Unflagged " + i + " tile not displaying correctly for force revel");
+            }
+            System.out.println("Unflaged " + i + " tile: " + testTile.ShowSquareImage());
+
+            testTile = new GridSquare(i);
+            testTile.FlagSquare();
+            testTile.ForceRevel();
+            if (i == 0)
+            {
+                Assertions.assertEquals(String.valueOf(i), testTile.ShowSquareImage(), "Flagged " + i + " tile not displaying correctly for force revel");
+            }else
+            {
+                testString = "\033[0;33m" + String.valueOf(i) + "\033[0;37m";
+                Assertions.assertEquals(testString, testTile.ShowSquareImage(), "Flagged " + i + " tile not displaying correctly for force revel");
+            }
+            System.out.println("Flagged " + i + " tile: " + testTile.ShowSquareImage());
         }
     }
 
