@@ -108,13 +108,13 @@ public class Main {
             game = new Grid(current.height, current.width, current.mines);
 
             do {
-                if (game.GetRemainingMines() == 1 || game.GetRemainingMines() == -1 )
+                if (game.MinesLeft() == 1 || game.MinesLeft() == -1 )
                 {
-                    System.out.println("There are: " + game.GetRemainingMines() + " mine left");
+                    System.out.println("There are: " + game.MinesLeft() + " mine left");
                 }
                 else
                 {
-                    System.out.println("There are: " + game.GetRemainingMines() + " mines left");
+                    System.out.println("There are: " + game.MinesLeft() + " mines left");
                 }
 
                 output = game.DrawGrid();
@@ -210,8 +210,7 @@ public class Main {
 
                     if (!GetPlaying() && !GetWin())
                     {
-                        game.ForceRevealAll();
-                        System.out.println(game.DrawGrid());
+                        System.out.println(game.ForceRevealAll());
                         if(!GetError().equals(""))
                         {
                             System.out.println(GetError());
