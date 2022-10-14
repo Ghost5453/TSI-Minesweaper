@@ -4,11 +4,6 @@ import java.util.Scanner;
 
 public class Main {
 
-    private static boolean _playing;
-    private static boolean _win;
-
-    private static String _errorMsg;
-
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
 
@@ -245,6 +240,11 @@ public class Main {
             }
         }while (inGame);
     }
+
+    private static boolean _playing;
+    private static boolean _win;
+
+    private static String _errorMsg;
 
     private  static  void InitialSetup()
     {

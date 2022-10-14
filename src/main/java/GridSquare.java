@@ -15,21 +15,13 @@ public class GridSquare {
         UpdateImage();
     }
 
-    public String CheckSquare()
-    {
-        UpdateImage();
-        return this.image;
-    }
-
+    //region Inputs
     public void FlagSquare(){
-        flagged = !flagged;
-        UpdateImage();
-    }
-
-    public void ForceRevel()
-    {
-        reveled = true;
-        UpdateImage();
+        if (!reveled)
+        {
+            flagged = !flagged;
+            UpdateImage();
+        }
     }
 
     public void RevelSquare()
@@ -41,16 +33,51 @@ public class GridSquare {
         }
     }
 
+    public void ForceRevel()
+    {
+        reveled = true;
+        flagged = false;
+        UpdateImage();
+    }
+    //endregion
+
+    //region Outputs
+    public String CheckSquare()
+    {
+        UpdateImage();
+        return this.image;
+    }
+
+    //region Getters
+    public boolean GetFlag()
+    {
+        return flagged;
+    }
+
+    public boolean GetReveled()
+    {
+        return reveled;
+    }
+
+    public int GetContents()
+    {
+        return contents;
+    }
+    //endregion
+
+    //endregion
+
+    //region class methods
     private void UpdateImage()
     {
-        String myStr;
-
         if (reveled)
         {
-            if (contents >= 0 && contents <= 8)
+            if (contents >= 0)
             {
                 if(contents > 0)
                 {
+                    String myStr;
+
                     myStr = String.valueOf(contents);
                     image = "\033[0;33m" + myStr + "\033[0;37m";
                 }else
@@ -69,23 +96,8 @@ public class GridSquare {
             }else {
 
                 image = "\u25A0";
-
             }
         }
     }
-
-    public boolean GetFlag()
-    {
-        return flagged;
-    }
-
-    public boolean GetReveled()
-    {
-        return reveled;
-    }
-
-    public int GetContents()
-    {
-        return contents;
-    }
+    //endregion
 }
