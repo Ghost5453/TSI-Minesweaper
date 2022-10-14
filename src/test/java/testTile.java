@@ -6,7 +6,7 @@ public class testTile {
     GridSquare testTile;
 
     @Test
-    void testInitialSetup()
+    public void testInitialSetup()
     {
         testTile = new GridSquare(testContens);
         Assertions.assertEquals(testContens, testTile.GetContents(), "Incorrect setup");
@@ -15,7 +15,7 @@ public class testTile {
     }
 
     @Test
-    void testCheckSquareTest()
+    public void testCheckSquareTest()
     {
         testTile = new GridSquare(testContens);
 
@@ -27,7 +27,7 @@ public class testTile {
     }
 
     @Test
-    void testFlagSquare()
+    public void testFlagSquare()
     {
         testTile = new GridSquare(testContens);
 
@@ -38,7 +38,7 @@ public class testTile {
     }
 
     @Test
-    void  testFlagCheckSequence()
+    public void testFlagCheckSequence()
     {
         testTile = new GridSquare(testContens);
 
@@ -58,7 +58,7 @@ public class testTile {
     }
 
     @Test
-    void testForceRevel()
+    public void testForceRevel()
     {
         testTile = new GridSquare(testContens);
 
@@ -70,7 +70,7 @@ public class testTile {
     }
 
     @Test
-    void testRevele()
+    public void testRevele()
     {
         for (int i = -1; i <= 9; i++)
         {
