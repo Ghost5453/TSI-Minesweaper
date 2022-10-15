@@ -108,13 +108,13 @@ import java.util.Scanner;
 <span class="nc" id="L108">            game = new Grid(current.height, current.width, current.mines);</span>
 
             do {
-<span class="nc bnc" id="L111" title="All 4 branches missed.">                if (game.GetRemainingMines() == 1 || game.GetRemainingMines() == -1 )</span>
+<span class="nc bnc" id="L111" title="All 4 branches missed.">                if (game.MinesLeft() == 1 || game.MinesLeft() == -1 )</span>
                 {
-<span class="nc" id="L113">                    System.out.println(&quot;There are: &quot; + game.GetRemainingMines() + &quot; mine left&quot;);</span>
+<span class="nc" id="L113">                    System.out.println(&quot;There are: &quot; + game.MinesLeft() + &quot; mine left&quot;);</span>
                 }
                 else
                 {
-<span class="nc" id="L117">                    System.out.println(&quot;There are: &quot; + game.GetRemainingMines() + &quot; mines left&quot;);</span>
+<span class="nc" id="L117">                    System.out.println(&quot;There are: &quot; + game.MinesLeft() + &quot; mines left&quot;);</span>
                 }
 
 <span class="nc" id="L120">                output = game.DrawGrid();</span>
@@ -210,36 +210,35 @@ import java.util.Scanner;
 
 <span class="nc bnc" id="L211" title="All 4 branches missed.">                    if (!GetPlaying() &amp;&amp; !GetWin())</span>
                     {
-<span class="nc" id="L213">                        game.ForceRevealAll();</span>
-<span class="nc" id="L214">                        System.out.println(game.DrawGrid());</span>
-<span class="nc bnc" id="L215" title="All 2 branches missed.">                        if(!GetError().equals(&quot;&quot;))</span>
+<span class="nc" id="L213">                        System.out.println(game.ForceRevealAll());</span>
+<span class="nc bnc" id="L214" title="All 2 branches missed.">                        if(!GetError().equals(&quot;&quot;))</span>
                         {
-<span class="nc" id="L217">                            System.out.println(GetError());</span>
-<span class="nc" id="L218">                            SetError(&quot;&quot;);</span>
+<span class="nc" id="L216">                            System.out.println(GetError());</span>
+<span class="nc" id="L217">                            SetError(&quot;&quot;);</span>
                         }
-<span class="nc" id="L220">                        EndGame();</span>
+<span class="nc" id="L219">                        EndGame();</span>
                     }
                 }
-<span class="nc bnc" id="L223" title="All 2 branches missed.">            }while (GetPlaying());</span>
+<span class="nc bnc" id="L222" title="All 2 branches missed.">            }while (GetPlaying());</span>
 
-<span class="nc" id="L225">            System.out.println(&quot;Would you like to play again\n\&quot;yes\&quot; or \&quot;no\&quot;&quot;);</span>
-<span class="nc" id="L226">            inputString = input.nextLine();</span>
-<span class="nc" id="L227">            lowerString = inputString.toLowerCase();</span>
-<span class="nc" id="L228">            parsedInput = InputParsing(lowerString);</span>
-<span class="nc" id="L229">            action = parsedInput[0].charAt(0);</span>
+<span class="nc" id="L224">            System.out.println(&quot;Would you like to play again\n\&quot;yes\&quot; or \&quot;no\&quot;&quot;);</span>
+<span class="nc" id="L225">            inputString = input.nextLine();</span>
+<span class="nc" id="L226">            lowerString = inputString.toLowerCase();</span>
+<span class="nc" id="L227">            parsedInput = InputParsing(lowerString);</span>
+<span class="nc" id="L228">            action = parsedInput[0].charAt(0);</span>
 
-<span class="nc bnc" id="L231" title="All 2 branches missed.">            if (action == 'n')</span>
+<span class="nc bnc" id="L230" title="All 2 branches missed.">            if (action == 'n')</span>
             {
-<span class="nc" id="L233">                inGame = false;</span>
-<span class="nc bnc" id="L234" title="All 2 branches missed.">            } else if (action == 'y')</span>
+<span class="nc" id="L232">                inGame = false;</span>
+<span class="nc bnc" id="L233" title="All 2 branches missed.">            } else if (action == 'y')</span>
             {
-<span class="nc" id="L236">                SetPlaying(true);</span>
+<span class="nc" id="L235">                SetPlaying(true);</span>
             } else
             {
-<span class="nc" id="L239">                System.out.println(&quot;\033[31mInvalid input type \&quot;yes\&quot; or \&quot;no\&quot;\033[0;37m&quot;);</span>
+<span class="nc" id="L238">                System.out.println(&quot;\033[31mInvalid input type \&quot;yes\&quot; or \&quot;no\&quot;\033[0;37m&quot;);</span>
             }
-<span class="nc bnc" id="L241" title="All 2 branches missed.">        }while (inGame);</span>
-<span class="nc" id="L242">    }</span>
+<span class="nc bnc" id="L240" title="All 2 branches missed.">        }while (inGame);</span>
+<span class="nc" id="L241">    }</span>
 
     private static boolean _playing;
     private static boolean _win;
@@ -249,96 +248,96 @@ import java.util.Scanner;
     private  static  void InitialSetup()
     {
 
-<span class="nc" id="L252">    }</span>
+<span class="nc" id="L251">    }</span>
 
     private static void InGame()
     {
 
-<span class="nc" id="L257">    }</span>
+<span class="nc" id="L256">    }</span>
 
     public static boolean GetWin()
     {
-<span class="nc" id="L261">        return _win;</span>
+<span class="nc" id="L260">        return _win;</span>
     }
 
     public static void SetWin(boolean myBool)
     {
-<span class="nc" id="L266">        _win = myBool;</span>
-<span class="nc" id="L267">    }</span>
+<span class="nc" id="L265">        _win = myBool;</span>
+<span class="nc" id="L266">    }</span>
 
     public static void SetError(String myError)
     {
-<span class="nc bnc" id="L271" title="All 2 branches missed.">        if (myError.equals(&quot;&quot;))</span>
+<span class="nc bnc" id="L270" title="All 2 branches missed.">        if (myError.equals(&quot;&quot;))</span>
         {
-<span class="nc" id="L273">            _errorMsg = &quot;&quot;;</span>
+<span class="nc" id="L272">            _errorMsg = &quot;&quot;;</span>
         }else
         {
-<span class="nc" id="L276">            _errorMsg = &quot;\n\033[0;31m&quot; + myError + &quot;\033[0;37m\n&quot;;</span>
+<span class="nc" id="L275">            _errorMsg = &quot;\n\033[0;31m&quot; + myError + &quot;\033[0;37m\n&quot;;</span>
         }
-<span class="nc" id="L278">    }</span>
+<span class="nc" id="L277">    }</span>
 
     public static String GetError()
     {
-<span class="nc" id="L282">        return _errorMsg;</span>
+<span class="nc" id="L281">        return _errorMsg;</span>
     }
 
     public static void SetPlaying (boolean myBool)
     {
-<span class="nc" id="L287">        _playing = myBool;</span>
-<span class="nc" id="L288">    }</span>
+<span class="nc" id="L286">        _playing = myBool;</span>
+<span class="nc" id="L287">    }</span>
     public static boolean GetPlaying()
     {
-<span class="nc" id="L291">        return _playing;</span>
+<span class="nc" id="L290">        return _playing;</span>
     }
 
     public static String [] InputParsing (String input)
     {
         char[] inputCharArray;
         String[] returnStrings;
-<span class="nc" id="L298">        String toAdd = &quot;&quot;;</span>
+<span class="nc" id="L297">        String toAdd = &quot;&quot;;</span>
         int counter;
-<span class="nc" id="L300">        List&lt;String&gt; parsesList = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L299">        List&lt;String&gt; parsesList = new ArrayList&lt;&gt;();</span>
 
-<span class="nc" id="L302">        inputCharArray = input.toCharArray();</span>
+<span class="nc" id="L301">        inputCharArray = input.toCharArray();</span>
 
-<span class="nc bnc" id="L304" title="All 2 branches missed.">        for (char myChar:inputCharArray) {</span>
+<span class="nc bnc" id="L303" title="All 2 branches missed.">        for (char myChar:inputCharArray) {</span>
 
-<span class="nc bnc" id="L306" title="All 2 branches missed.">            if (myChar == ' ')</span>
+<span class="nc bnc" id="L305" title="All 2 branches missed.">            if (myChar == ' ')</span>
             {
-<span class="nc bnc" id="L308" title="All 2 branches missed.">                if (toAdd != &quot;&quot;)</span>
+<span class="nc bnc" id="L307" title="All 2 branches missed.">                if (toAdd != &quot;&quot;)</span>
                 {
-<span class="nc" id="L310">                    parsesList.add(toAdd);</span>
-<span class="nc" id="L311">                    toAdd = &quot;&quot;;</span>
+<span class="nc" id="L309">                    parsesList.add(toAdd);</span>
+<span class="nc" id="L310">                    toAdd = &quot;&quot;;</span>
                 }
             } else
             {
-<span class="nc" id="L315">                toAdd += myChar;</span>
+<span class="nc" id="L314">                toAdd += myChar;</span>
             }
         }
 
-<span class="nc" id="L319">        parsesList.add(toAdd);</span>
-<span class="nc" id="L320">        returnStrings = new String[parsesList.size()];</span>
+<span class="nc" id="L318">        parsesList.add(toAdd);</span>
+<span class="nc" id="L319">        returnStrings = new String[parsesList.size()];</span>
 
-<span class="nc bnc" id="L322" title="All 2 branches missed.">        for (int i = 0; i &lt;parsesList.size(); i++)</span>
+<span class="nc bnc" id="L321" title="All 2 branches missed.">        for (int i = 0; i &lt;parsesList.size(); i++)</span>
         {
-<span class="nc" id="L324">            returnStrings[i] = parsesList.get(i);</span>
+<span class="nc" id="L323">            returnStrings[i] = parsesList.get(i);</span>
         }
 
-<span class="nc" id="L327">        return returnStrings;</span>
+<span class="nc" id="L326">        return returnStrings;</span>
     }
 
     public static void EndGame()
     {
-<span class="nc bnc" id="L332" title="All 2 branches missed.">        if (GetWin())</span>
+<span class="nc bnc" id="L331" title="All 2 branches missed.">        if (GetWin())</span>
         {
-<span class="nc" id="L334">            System.out.println(&quot;\n\033[32mCongratulations you did it :)\033[0;37m\n&quot;);</span>
+<span class="nc" id="L333">            System.out.println(&quot;\n\033[32mCongratulations you did it :)\033[0;37m\n&quot;);</span>
         }
         else
         {
-<span class="nc" id="L338">            System.out.println(&quot;\n\033[0;31mYou hit a mine&quot;);</span>
-<span class="nc" id="L339">            System.out.println(&quot;Try agan :(\033[0;37m\n&quot;);</span>
+<span class="nc" id="L337">            System.out.println(&quot;\n\033[0;31mYou hit a mine&quot;);</span>
+<span class="nc" id="L338">            System.out.println(&quot;Try agan :(\033[0;37m\n&quot;);</span>
         }
-<span class="nc" id="L341">        SetPlaying(false);</span>
-<span class="nc" id="L342">    }</span>
+<span class="nc" id="L340">        SetPlaying(false);</span>
+<span class="nc" id="L341">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

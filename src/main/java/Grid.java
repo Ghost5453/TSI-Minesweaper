@@ -10,11 +10,25 @@ public class Grid {
 
     private GridSquare[][] gameGrid;
 
-    Grid(int myHeight, int myWidth, int mines){
+    Grid(int myHeight, int myWidth, int myMines) //tested: preset, custom
+    {
+        if (myHeight < 2)
+            myHeight = 2;
+
+        if (myWidth < 2)
+            myWidth = 2;
+
+        if (myMines < 1)
+            myMines=1;
+
+        if (myMines >= (myHeight * myWidth))
+        {
+            myMines = (int)((myHeight * myWidth) / 4.85f);
+        }
 
         this.xSize = myWidth;
         this.ySize = myHeight;
-        this.mines = mines;
+        this.mines = myMines;
         AssignGridValues();
     }
 
@@ -63,14 +77,17 @@ public class Grid {
 
                         newX = dX + myX;
 
-                        if (newX == myX && newY == myY)
-                            continue;
-
                         if (newX >= 0 && newX < xSize)
                             xInRange = true;
 
                         if (newY >= 0 && newY < ySize)
                             yInRange = true;
+
+                        if (newX == myX && newY == myY)
+                        {
+                            xInRange = false;
+                            yInRange = false;
+                        }
 
                         if (yInRange && xInRange)
                             Revel(newX, newY);
@@ -92,8 +109,6 @@ public class Grid {
         int yPower = 1;
         float xSizeFloat = (float) xSize;
         float ySizeFloat = (float) ySize;
-
-
 
         while ((xSizeFloat / Math.pow(10, xPower)) > 1)
             xPower++;
@@ -194,12 +209,12 @@ public class Grid {
     }
 
     //region Grid Getters
-    public int GetXMax()
+    public int GetXMax() //tested
     {
         return xSize;
     }
 
-    public int GetYMax()
+    public int GetYMax() //tested
     {
         return  ySize;
     }
@@ -215,44 +230,29 @@ public class Grid {
     {
         return  gameGrid[y][x].GetReveled();
     }
+
+    public int GetSquareContent(int x, int y)
+    {
+        return gameGrid[y][x].GetContents();
+    }
     //endregion
+    //endregion
+
+    //region Manual Overrides for Private Methods
+    public void ManualSetGameBord(int[][] myNewBoard)
+    {
+        GenerateGrid(myNewBoard);
+    }
+
+    public int[][] ManualNumberGrid(int[][] myMineGrid) //tested
+    {
+        return PlaceNumbers(myMineGrid);
+    }
+
     //endregion
 
     //region Private
-    private void CheckWin()
-    {
-        boolean foundAllMinis = true;
-        boolean foundAllSafe = true;
-
-        for (int y = 0; y < ySize; y++)
-        {
-            for (int x = 0; x < xSize; x++)
-            {
-                if (gameGrid[y][x].GetContents() >= 0)
-                {
-                    if (!gameGrid[y][x].GetReveled())
-                    {
-                        foundAllSafe = false;
-                    }
-                } else
-                {
-                    if (!gameGrid[y][x].GetFlag())
-                    {
-                        foundAllMinis = false;
-                    }
-                }
-            }
-        }
-
-        if (foundAllSafe && foundAllMinis)
-        {
-            System.out.println(DrawGrid());
-            Main.SetWin(true);
-            Main.EndGame();
-        }
-    }
-
-    private void AssignGridValues()
+    private void AssignGridValues() // tested: presets, custom
     {
         int[][] numberGrid = new int[ySize][xSize];
 
@@ -263,7 +263,7 @@ public class Grid {
         GenerateGrid(numberGrid);
     }
 
-    private int[][] PlaceMines()
+    private int[][] PlaceMines() // tested: presets, custom
     {
         Random random = new Random();
         int[][] mineGrid = new int[ySize][xSize];
@@ -296,7 +296,7 @@ public class Grid {
         return mineGrid;
     }
 
-    private int[][] PlaceNumbers(int[][] myGrid)
+    private int[][] PlaceNumbers(int[][] myGrid) //tested
     {
         for (int y = 0; y < ySize; y++)
         {
@@ -346,7 +346,7 @@ public class Grid {
         return myGrid;
     }
 
-    private void GenerateGrid(int[][] myNumberGrid)
+    private void GenerateGrid(int[][] myNumberGrid) // tested: preset, custom
     {
         gameGrid = new GridSquare[ySize][xSize];
         for(int y = 0; y < ySize; y++)
@@ -355,6 +355,39 @@ public class Grid {
             {
                 gameGrid[y][x] = new GridSquare(myNumberGrid[y][x]);
             }
+        }
+    }
+
+    private void CheckWin()
+    {
+        boolean foundAllMinis = true;
+        boolean foundAllSafe = true;
+
+        for (int y = 0; y < ySize; y++)
+        {
+            for (int x = 0; x < xSize; x++)
+            {
+                if (gameGrid[y][x].GetContents() >= 0)
+                {
+                    if (!gameGrid[y][x].GetReveled())
+                    {
+                        foundAllSafe = false;
+                    }
+                } else
+                {
+                    if (!gameGrid[y][x].GetFlag())
+                    {
+                        foundAllMinis = false;
+                    }
+                }
+            }
+        }
+
+        if (foundAllSafe && foundAllMinis)
+        {
+            System.out.println(DrawGrid());
+            Main.SetWin(true);
+            Main.EndGame();
         }
     }
     //endregion
