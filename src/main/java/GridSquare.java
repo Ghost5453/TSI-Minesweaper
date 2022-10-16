@@ -69,6 +69,11 @@ public class GridSquare {
     //region class methods
     private void UpdateImage()
     {
+        String greenColour = "\033[0;32m";
+        String redColour = "\033[0;31m";
+        String yellowColour ="\033[0;33m";
+        String whiteColour = "\033[0;37m";
+
         if (reveled)
         {
             if (contents >= 0)
@@ -77,29 +82,29 @@ public class GridSquare {
                 {
                     String myStr;
                     myStr = String.valueOf(contents);
-                    image = "\033[0;33m" + myStr + "\033[0;37m";
+                    image = yellowColour + myStr + whiteColour;
                 }else
                 {
-                    image = String.valueOf(contents);
+                    image = whiteColour + String.valueOf(contents) + whiteColour;
                 }
             } else
             {
                 if (flagged)
                 {
-                    image = "\033[0;32m\u00D7\033[0;37m";
+                    image = greenColour + "\u00D7" + whiteColour;
                 }else
                 {
-                    image = "\033[0;31m\u00D7\033[0;37m";
+                    image = redColour + "\u00D7" + whiteColour;
                 }
             }
         }else
         {
             if(flagged)
             {
-                image = "\033[0;31m\u22A0\033[0;37m";
+                image = redColour + "\u22A0" + whiteColour;
             }else {
 
-                image = "\u25A0";
+                image =whiteColour + "\u25A0" + whiteColour;
             }
         }
     }

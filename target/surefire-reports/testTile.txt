@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: testTile
 -------------------------------------------------------------------------------
-Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.006 s - in testTile
+Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.005 s - in testTile

@@ -48,7 +48,7 @@ public class Grid {
         CheckWin();
     }
 
-    public void Revel(int myX, int myY)
+    public void Revel(int myX, int myY) //tested
     {
         int newX;
         int newY;
@@ -56,41 +56,47 @@ public class Grid {
         boolean yInRange;
         boolean xInRange;
         boolean checked;
+        boolean flagged;
 
         checked = gameGrid[myY][myX].GetReveled();
-        gameGrid[myY][myX].RevelSquare();
+        flagged = gameGrid[myY][myX].GetFlag();
 
-        if (gameGrid[myY][myX].GetContents() == -1)
+        if (!checked && !flagged)
         {
-            Main.SetPlaying(false);
-        } else
-        {
-            if (gameGrid[myY][myX].GetContents() == 0 && !checked)
+            gameGrid[myY][myX].RevelSquare();
+
+            if (gameGrid[myY][myX].GetContents() == -1)
             {
-                for (int dY = -1; dY <= 1; dY++)
+                Main.SetPlaying(false);
+            } else
+            {
+                if (gameGrid[myY][myX].GetContents() == 0)
                 {
-                    newY = dY + myY;
-                    for (int dX = -1; dX <= 1; dX++)
+                    for (int dY = -1; dY <= 1; dY++)
                     {
-                        xInRange = false;
-                        yInRange = false;
-
-                        newX = dX + myX;
-
-                        if (newX >= 0 && newX < xSize)
-                            xInRange = true;
-
-                        if (newY >= 0 && newY < ySize)
-                            yInRange = true;
-
-                        if (newX == myX && newY == myY)
+                        newY = dY + myY;
+                        for (int dX = -1; dX <= 1; dX++)
                         {
                             xInRange = false;
                             yInRange = false;
-                        }
 
-                        if (yInRange && xInRange)
-                            Revel(newX, newY);
+                            newX = dX + myX;
+
+                            if (newX >= 0 && newX < xSize)
+                                xInRange = true;
+
+                            if (newY >= 0 && newY < ySize)
+                                yInRange = true;
+
+                            if (newX == myX && newY == myY)
+                            {
+                                xInRange = false;
+                                yInRange = false;
+                            }
+
+                            if (yInRange && xInRange)
+                                Revel(newX, newY);
+                        }
                     }
                 }
             }
@@ -100,7 +106,7 @@ public class Grid {
     //endregion
 
     //region Outputs
-    public String DrawGrid()
+    public String DrawGrid() //tested
     {
         String blueColour ="\033[0;36m";
         String whiteColour = "\033[0;37m";
@@ -115,9 +121,6 @@ public class Grid {
 
         while ((ySizeFloat / Math.pow(10, yPower))> 1)
             yPower++;
-
-        System.out.println("xPower: " + xPower);
-        System.out.println("yPower: " + yPower);
 
         gridStr = blueColour + "y\n" + whiteColour;
 
@@ -191,7 +194,7 @@ public class Grid {
         return gridStr;
     }
 
-    public String ForceRevealAll()
+    public String ForceRevealAll() //tested
     {
         for(int y = 0; y < ySize; y++)
         {
@@ -203,7 +206,7 @@ public class Grid {
         return DrawGrid();
     }
 
-    public int MinesLeft()
+    public int MinesLeft() //tested
     {
         return mines - flaggedMines;
     }
@@ -221,17 +224,17 @@ public class Grid {
     //endregion
 
     //region Tile Getters
-    public boolean CheckFlagged(int x, int y)
+    public boolean CheckFlagged(int x, int y) //tested
     {
         return gameGrid[y][x].GetFlag();
     }
 
-    public boolean CheckReveled(int x, int y)
+    public boolean CheckReveled(int x, int y) //tested
     {
         return  gameGrid[y][x].GetReveled();
     }
 
-    public int GetSquareContent(int x, int y)
+    public int GetSquareContent(int x, int y) // tested
     {
         return gameGrid[y][x].GetContents();
     }
@@ -239,7 +242,7 @@ public class Grid {
     //endregion
 
     //region Manual Overrides for Private Methods
-    public void ManualSetGameBord(int[][] myNewBoard)
+    public void ManualSetGameBord(int[][] myNewBoard) //tested
     {
         GenerateGrid(myNewBoard);
     }

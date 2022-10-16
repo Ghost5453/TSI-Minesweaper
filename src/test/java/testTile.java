@@ -71,13 +71,18 @@ public class testTile {
     @Test
     public void testShowSquareImage()
     {
+        String greenColour = "\033[0;32m";
+        String redColour = "\033[0;31m";
+        String yellowColour ="\033[0;33m";
+        String whiteColour = "\033[0;37m";
+
         for (int i = -1; i <= 9; i++)
         {
             testTile = new GridSquare(i);
             System.out.println("\ni: " + i);
             System.out.println("Unflaged, Unreveled");
 
-            Assertions.assertEquals("\u25A0", testTile.ShowSquareImage(), "The squarer is not showing the correct symbol or assert doesn't work with unicode characters");
+            Assertions.assertEquals(whiteColour + "\u25A0" + whiteColour, testTile.ShowSquareImage(), "The squarer is not showing the correct symbol or assert doesn't work with unicode characters");
             System.out.println(testTile.ShowSquareImage());
 
             System.out.println("Flaged, Unreveled");
@@ -97,7 +102,7 @@ public class testTile {
             } else if(i == 0)
             {
 
-                Assertions.assertEquals("0",testTile.ShowSquareImage(), "Blank Not displaying");
+                Assertions.assertEquals(whiteColour + "0" + whiteColour,testTile.ShowSquareImage(), "Blank Not displaying");
 
             }else
             {
@@ -129,6 +134,7 @@ public class testTile {
     @Test
     public void testShowForcedReveledImagesNumbers()
     {
+        String whiteColour = "\033[0;37m";
         String testString = "";
         for (int i = 0; i < 10; i++)
         {
@@ -136,7 +142,7 @@ public class testTile {
             testTile.ForceRevel();
             if (i == 0)
             {
-                Assertions.assertEquals(String.valueOf(i), testTile.ShowSquareImage(), "unflagged " + i + " tile not displaying correctly for force revel");
+                Assertions.assertEquals(whiteColour + String.valueOf(i) + whiteColour, testTile.ShowSquareImage(), "unflagged " + i + " tile not displaying correctly for force revel");
             }else
             {
                 testString = "\033[0;33m" + String.valueOf(i) + "\033[0;37m";
@@ -149,7 +155,7 @@ public class testTile {
             testTile.ForceRevel();
             if (i == 0)
             {
-                Assertions.assertEquals(String.valueOf(i), testTile.ShowSquareImage(), "Flagged " + i + " tile not displaying correctly for force revel");
+                Assertions.assertEquals(whiteColour + String.valueOf(i) + whiteColour, testTile.ShowSquareImage(), "Flagged " + i + " tile not displaying correctly for force revel");
             }else
             {
                 testString = "\033[0;33m" + String.valueOf(i) + "\033[0;37m";

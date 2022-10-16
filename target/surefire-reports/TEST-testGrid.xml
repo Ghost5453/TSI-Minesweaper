@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="testGrid" time="0.037" tests="3" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="testGrid" time="0.072" tests="5" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="19"/>
     <property name="sun.jnu.encoding" value="UTF-8"/>
@@ -12,7 +12,7 @@
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="user.country" value="GB"/>
     <property name="sun.boot.library.path" value="/usr/lib/jvm/java-19-openjdk-19.0.0.0.36-3.rolling.fc36.x86_64/lib"/>
-    <property name="sun.java.command" value="/home/adam/Projects/TSI/MavenMinesweeper/target/surefire/surefirebooter7427029935507778898.jar /home/adam/Projects/TSI/MavenMinesweeper/target/surefire 2022-10-15T20-31-30_783-jvmRun1 surefire153195216399702078tmp surefire_03245173898087956806tmp"/>
+    <property name="sun.java.command" value="/home/adam/Projects/TSI/MavenMinesweeper/target/surefire/surefirebooter2116672673665685434.jar /home/adam/Projects/TSI/MavenMinesweeper/target/surefire 2022-10-16T18-21-52_122-jvmRun1 surefire18300888444959890831tmp surefire_06218567487439891505tmp"/>
     <property name="jdk.debug" value="release"/>
     <property name="surefire.test.class.path" value="/home/adam/Projects/TSI/MavenMinesweeper/target/test-classes:/home/adam/Projects/TSI/MavenMinesweeper/target/classes:/home/adam/.m2/repository/org/junit/jupiter/junit-jupiter/5.9.0/junit-jupiter-5.9.0.jar:/home/adam/.m2/repository/org/junit/jupiter/junit-jupiter-api/5.9.0/junit-jupiter-api-5.9.0.jar:/home/adam/.m2/repository/org/opentest4j/opentest4j/1.2.0/opentest4j-1.2.0.jar:/home/adam/.m2/repository/org/junit/platform/junit-platform-commons/1.9.0/junit-platform-commons-1.9.0.jar:/home/adam/.m2/repository/org/apiguardian/apiguardian-api/1.1.2/apiguardian-api-1.1.2.jar:/home/adam/.m2/repository/org/junit/jupiter/junit-jupiter-params/5.9.0/junit-jupiter-params-5.9.0.jar:/home/adam/.m2/repository/org/junit/jupiter/junit-jupiter-engine/5.9.0/junit-jupiter-engine-5.9.0.jar:/home/adam/.m2/repository/org/junit/platform/junit-platform-engine/1.9.0/junit-platform-engine-1.9.0.jar:/home/adam/.m2/repository/org/jacoco/jacoco-maven-plugin/0.8.8/jacoco-maven-plugin-0.8.8.jar:/home/adam/.m2/repository/org/codehaus/plexus/plexus-utils/3.0.22/plexus-utils-3.0.22.jar:/home/adam/.m2/repository/org/apache/maven/shared/file-management/1.2.1/file-management-1.2.1.jar:/home/adam/.m2/repository/org/apache/maven/maven-plugin-api/2.0.6/maven-plugin-api-2.0.6.jar:/home/adam/.m2/repository/org/apache/maven/shared/maven-shared-io/1.1/maven-shared-io-1.1.jar:/home/adam/.m2/repository/org/apache/maven/maven-artifact/2.0.2/maven-artifact-2.0.2.jar:/home/adam/.m2/repository/org/apache/maven/maven-artifact-manager/2.0.2/maven-artifact-manager-2.0.2.jar:/home/adam/.m2/repository/org/apache/maven/maven-repository-metadata/2.0.2/maven-repository-metadata-2.0.2.jar:/home/adam/.m2/repository/org/apache/maven/wagon/wagon-provider-api/1.0-alpha-6/wagon-provider-api-1.0-alpha-6.jar:/home/adam/.m2/repository/org/codehaus/plexus/plexus-container-default/1.0-alpha-9/plexus-container-default-1.0-alpha-9.jar:/home/adam/.m2/repository/junit/junit/3.8.1/junit-3.8.1.jar:/home/adam/.m2/repository/classworlds/classworlds/1.1-alpha-2/classworlds-1.1-alpha-2.jar:/home/adam/.m2/repository/org/apache/maven/reporting/maven-reporting-api/3.0/maven-reporting-api-3.0.jar:/home/adam/.m2/repository/org/apache/maven/doxia/doxia-sink-api/1.0/doxia-sink-api-1.0.jar:/home/adam/.m2/repository/org/jacoco/org.jacoco.agent/0.8.8/org.jacoco.agent-0.8.8-runtime.jar:/home/adam/.m2/repository/org/jacoco/org.jacoco.core/0.8.8/org.jacoco.core-0.8.8.jar:/home/adam/.m2/repository/org/ow2/asm/asm/9.2/asm-9.2.jar:/home/adam/.m2/repository/org/ow2/asm/asm-commons/9.2/asm-commons-9.2.jar:/home/adam/.m2/repository/org/ow2/asm/asm-analysis/9.2/asm-analysis-9.2.jar:/home/adam/.m2/repository/org/ow2/asm/asm-tree/9.2/asm-tree-9.2.jar:/home/adam/.m2/repository/org/jacoco/org.jacoco.report/0.8.8/org.jacoco.report-0.8.8.jar:"/>
     <property name="sun.cpu.endian" value="little"/>
@@ -27,7 +27,7 @@
     <property name="line.separator" value="&#10;"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
-    <property name="surefire.real.class.path" value="/home/adam/Projects/TSI/MavenMinesweeper/target/surefire/surefirebooter7427029935507778898.jar"/>
+    <property name="surefire.real.class.path" value="/home/adam/Projects/TSI/MavenMinesweeper/target/surefire/surefirebooter2116672673665685434.jar"/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="java.runtime.version" value="19+36"/>
     <property name="user.name" value="adam"/>
@@ -54,7 +54,9 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="63.0"/>
   </properties>
-  <testcase name="testGridGenCustom" classname="testGrid" time="0.025"/>
+  <testcase name="testGridGenCustom" classname="testGrid" time="0.037"/>
   <testcase name="testGridNumberPositioning" classname="testGrid" time="0.003"/>
+  <testcase name="testDrawGrid" classname="testGrid" time="0.011"/>
+  <testcase name="testGridFlagRevelAndForceRevel" classname="testGrid" time="0.009"/>
   <testcase name="testGridGenPresets" classname="testGrid" time="0"/>
 </testsuite>
